@@ -13,7 +13,7 @@ npm install
 And then run the application with:
 
 ```
-node src/web
+grunt start
 ```
 
 This will start the app in *development* mode - running against unconcatenated and unminified source files. To emulate how heroku runs the application, you need [foreman](https://github.com/ddollar/foreman):
@@ -35,7 +35,7 @@ App configuration should be placed either in _config.json_, or passed in as envi
 This project uses [Grunt](http://gruntjs.com/) as the build tool of choice. You can install it with _npm_:
 
 ```
-npm install -g grunt
+npm install -g grunt-cli
 ```
 
 Grunt can run all test suites (node, functional, client) with the following command:
