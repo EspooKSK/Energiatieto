@@ -238,9 +238,7 @@ define([
                 rect.exit().remove();
 
                 rect.on("click", onclickdelegate)
-                    .attr("title", function(d) {
-                        return d;
-                    })
+                    .attr("title", formatTooltipNumber)
                     .transition()
                     .duration(500)
                     .attr("y", newyCoordFn(data, range, series, layerIndex++))
@@ -254,6 +252,21 @@ define([
                     }).each(function() {
                         $(this).tipsy({ gravity: 's' });
                     });
+
+                function formatTooltipNumber(d) {
+                    function threeDigitsWithAtMostTwoDecimals(d) {
+                        var decimals = 2;
+                        var abs = Math.abs(d);
+                        if (abs >= 100) {
+                            decimals = 0;
+                        } else if (abs >= 10) {
+                            decimals = 1;
+                        }
+                        var coefficient = Math.pow(10, decimals)
+                        return Math.round(coefficient * d) / coefficient;
+                    };
+                    return threeDigitsWithAtMostTwoDecimals(d);
+                };
             });
 
             drawValuelines(range);
