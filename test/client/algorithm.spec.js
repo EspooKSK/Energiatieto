@@ -158,7 +158,7 @@ describe('energysystem', function() {
         var MockConsumer = function(cnmtype) {
             return {
                 consumptionType: cnmtype,
-                getDailyConsumption: function(day, type) { if (!type || type == cnmtype) { return day; } else { return 0; } }
+                getDailyConsumption: function(day, type) { if (!type || type === cnmtype) { return day; } else { return 0; } }
             };
         };
         var sys = new System([ new MockConsumer(), new MockConsumer('water') ]);

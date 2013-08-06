@@ -2,24 +2,24 @@
   "name": "energiatieto",
   "version": "0.0.1",
   "dependencies": {
+    "amdefine": "0.0.4",
     "express": "2.5.x",
     "jade": ">= 0.0.1",
     "async": ">= 0.1.22",
     "lazy": "1.0.8",
-    "gzippo": "0.2.0"
+    "gzippo": "0.2.0",
+    "underscore": "~1.5.1"
   },
   "engines": {
     "node": "0.8.x",
     "npm": "1.1.x"
   },
   "devDependencies": {
-    "grunt-shell": "0.1.3",
-    "grunt-simple-mocha": "0.2.0",
+    "grunt-shell": "~0.3.1",
+    "grunt-simple-mocha": "~0.4.0",
     "mocha": "1.6.0",
-    "underscore": "1.4.2",
-    "amdefine": "0.0.4",
-    "q": "0.8.9",
-    "grunt-requirejs": "0.3.5",
+    "q": "~0.9.6",
+    "grunt-requirejs": "~0.3.5",
     "phantom": "~0.5.2",
     "grunt": "0.4.1",
     "grunt-contrib-jshint": "~0.6.2"

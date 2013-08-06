@@ -108,34 +108,38 @@ module.exports = function(grunt) {
       }
     },
     requirejs: {
-      mainConfigFile: 'src/app/requirejs.config.js',
-      // this paths config must be here, otherwise almond won't work
-      paths: {
+      compile: {
+        options: {
+          mainConfigFile: 'src/app/requirejs.config.js',
+          // this paths config must be here, otherwise almond won't work
+          paths: {
 
-      },
-      almond: true,
-      insertRequire: ['main'],
-      dir: 'public/dist',
-      appDir: 'src/app',
-      inlineText: true,
-      modules: [{
-        name: 'main'
-      }],
-      deps: [ 'backbone.marionette.handlebars' ],
-      hbs: {
-        templateExtension: 'hbs'
-      },
-      pragmas: {
-        doExclude: true
-      },
-      pragmasOnSave: {
-        //removes Handlebars.Parser code (used to compile template strings) set
-        //it to `false` if you need to parse template strings even after build
-        excludeHbsParser : true,
-        // kills the entire plugin set once it's built.
-        excludeHbs: true,
-        // removes i18n precompiler, handlebars and json2
-        excludeAfterBuild: true
+          },
+          almond: true,
+          insertRequire: ['main'],
+          dir: 'public/dist',
+          appDir: 'src/app',
+          inlineText: true,
+          modules: [{
+            name: 'main'
+          }],
+          deps: [ 'backbone.marionette.handlebars' ],
+          hbs: {
+            templateExtension: 'hbs'
+          },
+          pragmas: {
+            doExclude: true
+          },
+          pragmasOnSave: {
+            //removes Handlebars.Parser code (used to compile template strings) set
+            //it to `false` if you need to parse template strings even after build
+            excludeHbsParser : true,
+            // kills the entire plugin set once it's built.
+            excludeHbs: true,
+            // removes i18n precompiler, handlebars and json2
+            excludeAfterBuild: true
+          }
+        }
       }
     },
     shell: {
@@ -170,7 +174,7 @@ module.exports = function(grunt) {
   // Default task.
   grunt.registerTask('default', ['jshint', 'functional', 'requirejs']);
 
-  grunt.registerTask('deploy', ['jshint', 'functional', 'requirejs', 'shell']);
+  grunt.registerTask('deploy', ['functional', 'requirejs', 'shell']);
 
   grunt.registerTask('mocha', 'simplemocha');
 
