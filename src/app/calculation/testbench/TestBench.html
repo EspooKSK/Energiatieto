@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+
+        <title>Energiatieto Calculations</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        
+        <link href="css/layout.css" rel="stylesheet" type="text/css" />
+        <script src="TestBench.js"></script>
+
+        <script src="../profiles/heatingDemandProfileHelsinkiKaisaniemiReferenceYear.js"></script>
+        <script src="../profiles/simulatedSpaceHeatingDemandOfResidentialReferenceBuildingFrom2013To2014.js"></script>
+        <script src="../profiles/simulatedSpaceHeatingDemandOfResidentialReferenceBuildingFrom2015To2017.js"></script>
+        <script src="../profiles/vantaaReferenceYearTotalIrradiationOnHorizontalSurface.js"></script>
+        <script src="../profiles/vantaaReferenceYearOutsideTemperature.js"></script>
+
+        <script src="../tables/referenceYearCalendar.js"></script>
+        <script src="../tables/domesticElectricityConsumptionWeekValues.js"></script>
+        <script src="../tables/domesticElectricityConsumptionHourValues.js"></script>
+        <script src="../tables/bedrockThermalConductivity.js"></script>
+    
+        <script src="../Profile.js"></script>
+        <script src="../Constants.js"></script>         
+        <script src="../Building.js"></script>
+        <script src="../SolarInstallation.js"></script>
+        <script src="../System.js"></script> 
+        <script src="../Borehole.js"></script>
+
+        <script src="../HotWaterHeatingEnergyProfile.js"></script>
+        <script src="../SpaceHeatingEnergyProfile.js"></script>
+        <script src="../ElectricityConsumptionProfile.js"></script>
+        <script src="../SolarElectricityProductionProfile.js"></script>
+        <script src="../SolarHeatingEnergyProductionProfile.js"></script>
+        <script src="../BoreholeEnergyProductionAndConsumption.jS"></script>
+
+        <script src="../SystemElectricityConsumption.js"></script>
+        <script src="../SystemElectricityProduction.js"></script>
+        <script src="../SystemElectricityBalance.js"></script>
+        <script src="../SystemHotWaterHeatingEnergyConsumption.js"></script>
+        <script src="../SystemHotWaterHeatingEnergyProduction.js"></script>
+        <script src="../SystemHotWaterHeatingEnergyBalance.js"></script>
+        <script src="../SystemSpaceHeatingEnergyConsumption.js"></script>
+        <script src="../SystemSpaceHeatingEnergyProduction.js"></script>
+        <script src="../SystemSpaceHeatingEnergyBalance.js"></script>
+
+    </head>
+
+    <body onload="Initialize();">
+        <div class="containerMaster">
+            <div class="containerWide">
+        		<div class="header"></div>
+                <div class="panelAreaRight">
+                    <div id="output"></div>
+                </div>
+        		<div class="panelAreaLeft">
+                    <div class="panelGraphTop"></div>
+                    <div class="panelGraphLine"></div>
+                    <div class="panelGraphHeader bold">Selection</div>
+                    <div class="panelGraph">
+                        <div id="input" class="textBody">
+                            <form>
+                                Profile:
+                                <select id="selectorProfile" onchange="Update()">
+                                    <option value="">Choose</option>
+                                    <option value="1">Building - Hot water heating energy</option>
+                                    <option value="2">Building - Space heating energy</option>
+                                    <option value="3">Building - Electricity consumption</option>
+                                    <option value="4">Solar installation - Electricity production</option>
+                                    <option value="15">Solar installation - Water heating energy production</option>
+                                    <option value="16">Borehole - Space heating energy production</option>
+                                    <option value="17">Borehole - Hot water heating energy production</option>
+                                    <option value="18">Borehole - Electricity consumption</option>
+                                    <option value="19">Borehole - Heating water output temperature</option>
+                                    <option value ="20">Borehole - Heat pump space heating COP</option>
+                                    <option value ="21">Borehole - Heat pump water heating COP</option>
+                                    <option value="5">System - Space heating energy consumption</option>
+                                    <option value="6">System - Space heating energy production</option>
+                                    <option value="7">System - Space heating energy balance</option>
+                                    <option value="8">System - Hot water heating energy consumption</option>
+                                    <option value="9">System - Hot water heating energy production</option>
+                                    <option value="10">System - Hot water heating energy balance</option>
+                                    <option value="11">System - Electricity consumption</option>
+                                    <option value="12">System - Electricity production</option>
+                                    <option value="13">System - Electricity balance</option>
+                                    <option value="14">Vantaa reference year outside temperature</option>
+                                </select>
+                                <br>
+                            </form>
+                            <form>
+                                View:
+                                <select id="selectorView" onchange="Update()">
+                                    <option value="Hours">Hours</option>
+                                    <option value="Days">Days</option>
+                                    <option value="Months">Months</option>
+                                    <option value="Year">Year</option>
+                                    <option value="hourOfDayAvgValueInMonth">Average hours of day in January</option>
+                                    <option value="hourOfDayMaxValueInMonth">Maximum hours of day in January</option>
+                                    <option value="hourOfDayMinValueInMonth">Minimum hours of day in January</option>
+                                    <option value="yearPositive">Positive balace on year</option>
+                                    <option value="yearNegative">Negative balance of year</option>
+                                    <option value="yearMax">Maximum value of year</option>
+                                    <option value="yearMin">Minimum value of year</option>
+                                </select>
+                                <br>
+                            </form>         
+                        </div>
+                    </div>
+                    <div class="panelGraphLine"></div>
+                    <div class="panelGraphHeader bold" id="objectProperties">Object properties</div>
+                    <div class="panelGraph">
+                        <div id="buildingData"></div>
+                    </div>
+                    <div class="panelGraphLine"></div>
+                    <div class="panelGraphHeader bold">Debugging messages</div>
+                    <div class="panelGraph">
+                        <div id="debug"></div>
+                    </div>
+                </div>
+        	</div>
+        </div>
+    </body>
+
+</html>
