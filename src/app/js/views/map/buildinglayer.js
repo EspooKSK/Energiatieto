@@ -102,7 +102,7 @@ define([
                     if (event.row) {
                         // user clicked on a building
                         var byggid = event.row.ByggID.value;
-                        var findByByggId = function(it) { return it.get("byggid") == byggid; };
+                        var findByByggId = function(it) { return it.get("byggid") === byggid; };
 
                         var building = collection.find(findByByggId);
 

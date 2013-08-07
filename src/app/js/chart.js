@@ -21,7 +21,7 @@ define([
         
             labelDecimals = 2,
             horizLinesCount = 4,
-            quantileCount = 2;
+            quantileCount = 2,
 
             chart = d3.select(element)
                       .attr("width", width)
@@ -225,6 +225,8 @@ define([
                 var rect = d3.select(this)
                             .selectAll("rect")
                             .data(data);
+              
+                var formatTooltipNumber;
 
                 rect.enter()
                     .append("rect")
@@ -253,7 +255,7 @@ define([
                         $(this).tipsy({ gravity: 's' });
                     });
 
-                function formatTooltipNumber(d) {
+                formatTooltipNumber = function (d) {
                     function threeDigitsWithAtMostTwoDecimals(d) {
                         var decimals = 2;
                         var abs = Math.abs(d);
@@ -262,9 +264,9 @@ define([
                         } else if (abs >= 10) {
                             decimals = 1;
                         }
-                        var coefficient = Math.pow(10, decimals)
+                        var coefficient = Math.pow(10, decimals);
                         return Math.round(coefficient * d) / coefficient;
-                    };
+                    }
                     return threeDigitsWithAtMostTwoDecimals(d);
                 };
             });

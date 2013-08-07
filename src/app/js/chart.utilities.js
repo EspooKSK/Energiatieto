@@ -10,7 +10,7 @@ define([
             return typeof val !== "undefined";
         };
 
-        var utils = function() {
+        var Utils = function() {
             
             var self = this;
 
@@ -104,5 +104,5 @@ define([
             };
         };
 
-        return new utils();
+        return new Utils();
 });

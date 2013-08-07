@@ -131,7 +131,7 @@ define([
                 });
             },
             onHide: function() {
-                self.$(".map").children().detach();
+                this.$(".map").children().detach();
             }
         });
 });

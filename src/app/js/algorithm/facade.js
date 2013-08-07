@@ -90,7 +90,7 @@ define([
 
                     var pivot = function(obj) {
                         var args = ["total", "averages"];
-                            ret = {};
+                        var ret = {};
                         _.each(args, function(value) {                            
                             _.map(obj, function(val, key) {
                                 if (!ret[value]) {

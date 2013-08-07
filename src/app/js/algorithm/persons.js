@@ -8,7 +8,7 @@ define([], function() {
 
     return function(num) {
         this.getDailyConsumption = function(day, type) {
-            if (!type || type == consumptionType) {
+            if (!type || type === consumptionType) {
                 return dailyConsumption * num;
             } else {
                 return 0;

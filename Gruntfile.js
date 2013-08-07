@@ -69,9 +69,11 @@ module.exports = function(grunt) {
         },
         options: {
           browser: true,
-          predef: [
-            "window", "d3"
-          ]
+          globals: {"define": true,
+                    "google": false,
+                    "window": false,
+                    "d3": false,
+                    "_": false}
         }
       }
     },

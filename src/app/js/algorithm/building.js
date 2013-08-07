@@ -15,7 +15,7 @@ define([
                 heat = heating.byYear(buildYear);
 
             this.getDailyConsumption = function(day, type) {
-                if (type && consumptionType != type) {
+                if (type && consumptionType !== type) {
                     return 0;
                 } else {
                     var mon = monthops.monthForDay(day),
