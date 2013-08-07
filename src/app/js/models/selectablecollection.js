@@ -3,20 +3,6 @@ define(["backbone"], function(Backbone) {
     return Backbone.Collection.extend({
         initialize: function(options) {
             var self = this;
-            this.on("all", function(event, model, info) {
-                switch(event) {
-                    case "add":
-                        model.save();
-                        break;
-                    case "change":
-                        if (!info.changes.id) {
-                            model.save();
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            });
 
             this.on("select", function(model) {
                 self.each(function(it) {
@@ -46,19 +32,6 @@ define(["backbone"], function(Backbone) {
             return this.find(function(it) {
                 return it.get("___selected");
             });
-        },
-        attachTo: function(parent, prop) {
-            var self      = this,
-                sync = function() {
-                    var changes = {};
-                    changes[prop] = self.toJSON();
-                    parent.set(changes);
-                };
-
-            this.on("change", sync);
-            this.on("reset", sync);
-            this.on("remove", sync);
-            sync();
         }
     });
 });

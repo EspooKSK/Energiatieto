@@ -102,18 +102,6 @@ define([
                         });
                 });
 
-                this.model.fetch({
-                    success: function(model) {
-                        if (model.has("center")) {
-                            var center = model.get("center");
-                            self.map.setCenter(new google.maps.LatLng(center.lat, center.lng));
-                        }
-                        if (model.has("zoom")) {
-                            self.map.setZoom(model.get("zoom"));
-                        }
-                    }
-                });
-
                 google.maps.event.addListener(this.map, 'center_changed', function() {
                     var center = self.map.getCenter();
                     self.model.set({
