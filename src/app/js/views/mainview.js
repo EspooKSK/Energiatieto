@@ -6,7 +6,7 @@ define([
         "./form/productionform",
         "./form/purchasedform",
         "../models/selectedbuildings",
-        "../models/selectablecollection",
+        "../models/energyproducers",
         "./chartareaview",
         "../models/chartareamodel",
         "./helptext",
@@ -25,7 +25,7 @@ define([
         ProductionForm,
         PurchasedForm,
         SelectedBuildings,
-        SelectableCollection,
+        EnergyProducers,
         ChartAreaView,
         ChartAreaModel,
         HelpTextView,
@@ -60,13 +60,16 @@ define([
             var self       = this,
                 buildings  = this.buildings  = SelectedBuildings,
                 chartModel = this.chartModel = new ChartAreaModel(options.model),
-                producers  = this.producers  = new SelectableCollection();
+                producers  = this.producers  = EnergyProducers;
 
             this.bindTo(this.buildings, "select", this.showBuildingInfoForm);
             this.bindTo(this.buildings, "remove", this.showBuildingInfoForm);
 
             this.bindTo(this.producers,  "select", this.showProductionForm);
             this.bindTo(this.producers,  "remove", this.showProductionForm);
+
+            this.producers.attachTo(this.model, "producers");
+            this.buildings.attachTo(this.model, "buildings");
 
             this.ChartArea = new ChartAreaView({
                 model: chartModel
@@ -123,6 +126,9 @@ define([
                 model: new Backbone.Model()
             }));
             HelpText.trigger("change", BuildingHelpText);
+            
+            this.producers.fetch();
+            this.buildings.fetch();
         }
     });
     return MainView;

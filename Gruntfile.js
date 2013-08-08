@@ -73,7 +73,8 @@ module.exports = function(grunt) {
                     "google": false,
                     "window": false,
                     "d3": false,
-                    "_": false}
+                    "_": false,
+                    "Backbone": false}
         }
       }
     },
