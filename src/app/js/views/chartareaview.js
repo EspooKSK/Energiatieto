@@ -47,7 +47,7 @@ define([
             "click .subheader": "subheaderclick"
         },
         subheaderclick: function(event) {
-            var trgt = this.$(event.target),
+            var trgt = this.$(event.target).closest('.subheader'),
                 self = this;
 
             this.markSelected(trgt);
