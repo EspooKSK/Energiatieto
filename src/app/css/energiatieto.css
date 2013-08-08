@@ -51,8 +51,7 @@ a:hover, a:active, a:focus {
 /* Layout */
 
 div.navbar {
-    position: absolute;
-    width: 1000px;
+    width: 100%;
     z-index: 1030;
 }
 
@@ -66,16 +65,17 @@ div.navbar {
 
 .master { /* Centers the lay-out and takes the height of the window */
     height: inherit;
-    width: 1030px;
+    width: 80%;
+    min-width: 1000px;
     margin: 0 auto;
 }
 
 .wide { /* Sits inside the containerMaster, holds the shadow bitmap, the panels and expands vertically depending on the content in panelLeft */
-    position: absolute;
-    width: 1015px;
+    position: relative;
     min-height: 100%;
-    padding-left: 15px;
-    background-image: url(/images/shadow.png);
+    /*background-image: url(/images/shadow.png);*/
+    background-color: #FFF;
+    overflow: hidden;
 }
 
 .footer {
@@ -96,16 +96,19 @@ div.navbar {
 
 .panel.left {
     float: left;
-    margin-top: 35px;
     margin-bottom: 0px; /* 0 if there is no footer */
     width: 560px;
+    background-color: #F0F0F0;
+    box-shadow: 3px 0px 5px #E0E0E0
 }
 
 .panel.right {
-    float: right;
-    margin-top: 75px;
-    margin-right: 15px;
-    width: 420px;
+    margin-top: 1em;
+    padding-right: 24px;
+    padding-left: 24px;
+    width: auto;
+    min-width: 392px;
+    overflow: hidden;
 }
 
 .chart-area {
@@ -113,7 +116,12 @@ div.navbar {
     min-height: 100%;
 }
 .chart-area > * {
-    padding-top: 50px;
+    padding-top: 1.6em;
+}
+
+.chart-collection {
+    overflow: hidden;
+    width: 100%;
 }
 
 .main {
@@ -148,7 +156,8 @@ div.navbar {
 
 .map .controls {
     position: relative;
-    width: 385px;
+    width: auto;
+    padding: 0 10px;
     height: 30px;
     z-index: 100000;
 }
@@ -168,7 +177,7 @@ div.navbar {
     margin-top: 20px;
     padding-bottom: 20px;
     margin-bottom: 20px; /* mikko */
-    width: 400px;
+    width: auto;
     border-width: 1px;
     border-style: solid;
     border-color: #d9d9d9;
@@ -177,7 +186,7 @@ div.navbar {
 .controlform-frame-header {
     background-color: #d9d9d9;
     height: 25px;
-    width: 400px;
+    width: auto;
     padding-top: 5px;
 }
 .controlform-frame-content {
@@ -185,13 +194,13 @@ div.navbar {
 }
 
 .controlform-divider {
-    width:360px;
     border-bottom: 1px;
     border-bottom-style: solid;
     border-bottom-color: #d9d9d9;
     height: 15px;
     padding-top: 15px;
-    margin-left: 20px;
+    margin-left: 2em;
+    margin-right: 2em;
     margin-bottom: 20px;
     font-size: 12px;
     font-family: inherit;
@@ -281,10 +290,13 @@ div.navbar {
     font-size: 0.85em;
 }
 .et-info {                                  /* mikko */
-    padding-right: 10px;
-    padding-left: 5px;
-    margin-top: 0px;
+    margin: 0 2em;
     font-size: 0.85em;
+}
+
+.et-info > p {
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .et-input-micro {                           /* mikko */
@@ -301,10 +313,11 @@ input[et-view] {                            /* mikko */
 }
 
 .data-divider {                             /* mikko */
-    width: 360px;
+    width: auto;
     height: 1px;
     background-color: #d9d9d9;
-    margin-left: 20px;
+    margin-left: 2em;
+    margin-right: 2em;
     margin-bottom: 5px;
 }
 
@@ -349,10 +362,17 @@ select.input-medium, select.input-mini, select.et-input-mini, select.input-small
 }
 
 form.search input[type=submit] {
-    margin-top: -10px;
+    width: 5em;
+    float: right;
 }
 form.search input[name=search] {
-    width: 310px;
+    width: 100%;
+}
+
+form.search span.searchbox {
+    padding-right: 2em;
+    display: block;
+    overflow: hidden;
 }
 
 
@@ -374,8 +394,7 @@ form.search input[name=search] {
 
 .chart-area h4 {
     font-weight: normal;
-    margin-top: -10px;
-
+    margin-top: 0;
     margin-left: 20px;
     font-size: 90%;
 }

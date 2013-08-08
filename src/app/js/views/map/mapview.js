@@ -88,7 +88,7 @@ define([
             },
             createMap: function() {
                 var self = this;
-                this.map = new google.maps.Map($("<div style='width: 400px; height: 300px;'/>")[0], MapStyles.options());
+                this.map = new google.maps.Map($("<div style='width: 100%; height: 500px;'/>")[0], MapStyles.options());
                 this.bindTo(this, "search", function(address) {
                     new google.maps.Geocoder().geocode({
                             address: address,
