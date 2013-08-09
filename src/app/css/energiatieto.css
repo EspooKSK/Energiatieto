@@ -283,6 +283,13 @@ div.navbar {
   *margin-left: 0;
 }
 
+.form-horizontal .et-controls .slider {
+    width: 195px;
+    display: inline-block;
+    margin-top: 0.3em;
+    vertical-align: middle;
+}
+
 .et-unit {                                  /* mikko */
     margin-left: 4px;
     vertical-align: bottom;

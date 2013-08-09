@@ -162,6 +162,7 @@ require.config({
         'json2': '../lib/json2/json2',
         'd3': '../lib/d3/d3.v2',
         'jquery': '../lib/jquery/jquery-1.8.2',
+        'jquery-ui': '../lib/jqueryui/jquery-ui-1.10.3.custom',
         'underscore': '../lib/lodash/lodash-0.9.0',
         'backbone': '../lib/backbone/backbone-0.9.2',
         'backbone.localstorage': '../lib/backbone/backbone.localStorage',
