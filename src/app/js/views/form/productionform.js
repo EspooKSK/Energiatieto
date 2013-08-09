@@ -65,49 +65,48 @@ define([
             },
             onRender: function() {
                 var self = this;
-                console.log('this.model:', this.model);
-                console.log('this.model.roofArea:', this.model.roofArea);
-                console.log('this.model.attributes.roofArea:', this.model.attributes.roofArea);
-
-                function onPhotovoltaicAreaSliderSlide(event, ui){
-                  console.log('event:', event);
-                  console.log('ui:', ui);
-                  var value = ui.value;
-                  self.model.set('photovoltaicArea', value);
-                }
-
-                function onThermalAreaSliderSlide(event, ui){
-                  console.log('event:', event);
-                  console.log('ui:', ui);
-                  var value = ui.value;
-                  self.model.set('thermalArea', value);
-                }
-
-                this.$( "#photovoltaicAreaSlider" ).slider({
-                  min: 0,
-                  max: this.model.attributes.roofArea,
-                  slide: onPhotovoltaicAreaSliderSlide
-                });
-                this.$( "#thermalAreaSlider" ).slider({
-                  min: 0,
-                  max: this.model.attributes.roofArea,
-                  slide: onThermalAreaSliderSlide
-                });
-                var bindings = ModelBinder.createDefaultBindings(this.el, 'name');
-                bindings.photovoltaicArea = { selector: '[name=photovoltaicArea]',
-                                              converter: function(direction, value, attr, model, els){
-                                                self.$( "#photovoltaicAreaSlider" ).slider( "value", value );
-                                                return value;
-                                              }};
-                bindings.thermalArea = { selector: '[name=thermalArea]',
-                                         converter: function(direction, value, attr, model, els){
-                                           self.$( "#thermalAreaSlider" ).slider( "value", value );
-                                           return value;
-                                         }};
+              
+                initializeAreaSliders();
+                var bindings = getBindings();
                 this.modelBinder.bind(this.model, this.el, bindings);
-                console.log('this.model:', this.model);
-                console.log('this.el:', this.el);
-                console.log('bindings:', bindings);
+
+                return bindings;
+
+                function initializeAreaSliders(){
+                  self.$( "#photovoltaicAreaSlider" ).slider({
+                    min: 0,
+                    max: self.model.attributes.roofArea,
+                    slide: function (event, ui){
+                      var value = ui.value;
+                      self.model.set('photovoltaicArea', value);
+                    }
+                  });
+
+                  self.$( "#thermalAreaSlider" ).slider({
+                    min: 0,
+                    max: self.model.attributes.roofArea,
+                    slide: function (event, ui){
+                      var value = ui.value;
+                      self.model.set('thermalArea', value);
+                    }
+                  });
+                }
+
+                function getBindings(){
+                  var bindings = ModelBinder.createDefaultBindings(self.el, 'name');
+
+                  bindings.photovoltaicArea = { selector: '[name=photovoltaicArea]',
+                                                converter: function(direction, value, attr, model, els){
+                                                  self.$( "#photovoltaicAreaSlider" ).slider( "value", value );
+                                                  return value;
+                                                }};
+                  bindings.thermalArea = { selector: '[name=thermalArea]',
+                                           converter: function(direction, value, attr, model, els){
+                                             self.$( "#thermalAreaSlider" ).slider( "value", value );
+                                             return value;
+                                           }};
+                  return bindings;
+                }
             },
             onClose: function() {
                 this.modelBinder.unbind();

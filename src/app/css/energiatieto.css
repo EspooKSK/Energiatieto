@@ -284,9 +284,10 @@ div.navbar {
 }
 
 .form-horizontal .et-controls .slider {
-    width: 195px;
+    width: 190px;
     display: inline-block;
     margin-top: 0.3em;
+    margin-left: 0.4em;
     vertical-align: middle;
 }
 
