@@ -68,7 +68,8 @@ define([
             onRender: function() {
                 var self = this;
               
-                initializeAreaSliders();
+                if(self.templateHelpers.typeIsSolar()) initializeAreaSliders();
+
                 var bindings = getBindings();
                 this.modelBinder.bind(this.model, this.el, bindings);
 
@@ -99,16 +100,18 @@ define([
                 function getBindings(){
                   var bindings = ModelBinder.createDefaultBindings(self.el, 'name');
 
-                  bindings.photovoltaicArea = { selector: '[name=photovoltaicArea]',
-                                                converter: function(direction, value, attr, model, els){
-                                                  self.$( "#photovoltaicAreaSlider" ).slider( "value", value );
-                                                  return value;
-                                                }};
-                  bindings.thermalArea = { selector: '[name=thermalArea]',
-                                           converter: function(direction, value, attr, model, els){
-                                             self.$( "#thermalAreaSlider" ).slider( "value", value );
-                                             return value;
-                                           }};
+                  if(self.templateHelpers.typeIsSolar()){
+                    bindings.photovoltaicArea = { selector: '[name=photovoltaicArea]',
+                                                  converter: function(direction, value, attr, model, els){
+                                                    self.$( "#photovoltaicAreaSlider" ).slider( "value", value );
+                                                    return value;
+                                                  }};
+                    bindings.thermalArea = { selector: '[name=thermalArea]',
+                                             converter: function(direction, value, attr, model, els){
+                                               self.$( "#thermalAreaSlider" ).slider( "value", value );
+                                               return value;
+                                             }};
+                  }
                   return bindings;
                 }
             },
