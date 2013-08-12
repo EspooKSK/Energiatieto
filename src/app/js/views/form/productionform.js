@@ -68,9 +68,13 @@ define([
             onRender: function() {
                 var self = this;
               
-                if(self.templateHelpers.typeIsSolar()) initializeAreaSliders();
+                var bindings = ModelBinder.createDefaultBindings(self.el, 'name');
 
-                var bindings = getBindings();
+                if(self.model.get('type') === 'solarpanel'){
+                  initializeAreaSliders();
+                  addSliderBindings(bindings);
+                }
+
                 this.modelBinder.bind(this.model, this.el, bindings);
 
                 this.$('.background-details').hide();
@@ -97,22 +101,18 @@ define([
                   });
                 }
 
-                function getBindings(){
-                  var bindings = ModelBinder.createDefaultBindings(self.el, 'name');
-
-                  if(self.templateHelpers.typeIsSolar()){
-                    bindings.photovoltaicArea = { selector: '[name=photovoltaicArea]',
+                function addSliderBindings(bindings){
+                    bindings.photovoltaicArea = { selector: '[name="photovoltaicArea"]',
                                                   converter: function(direction, value, attr, model, els){
                                                     self.$( "#photovoltaicAreaSlider" ).slider( "value", value );
                                                     return value;
                                                   }};
-                    bindings.thermalArea = { selector: '[name=thermalArea]',
+                    bindings.thermalArea = { selector: '[name="thermalArea"]',
                                              converter: function(direction, value, attr, model, els){
                                                self.$( "#thermalAreaSlider" ).slider( "value", value );
                                                return value;
                                              }};
-                  }
-                  return bindings;
+                    return bindings;
                 }
             },
             onClose: function() {
