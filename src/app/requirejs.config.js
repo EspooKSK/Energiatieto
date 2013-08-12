@@ -13,6 +13,9 @@ require.config({
         'backbone.localstorage': {
             deps: ['backbone']
         },
+        'bootstrap': {
+            deps: ['jquery']
+        },
         'simulatedSpaceHeatingDemandOfResidentialReferenceBuildingFrom2013To2014': {
             exports: 'simulatedSpaceHeatingDemandOfResidentialReferenceBuildingFrom2013To2014'
         },
@@ -168,6 +171,7 @@ require.config({
         'backbone.localstorage': '../lib/backbone/backbone.localStorage',
         'backbone.modelbinder': '../lib/backbone/backbone.modelbinder-0.1.6',
         'backbone.marionette': '../lib/marionette/backbone.marionette.bundle-1.0.0-beta3',
+        'bootstrap': '../lib/bootstrap/js/bootstrap',
         'hbs': '../lib/hbs/hbs-0.4.0',
         'i18nprecompile': '../lib/hbs/i18nprecompile',
         'handlebars': '../lib/handlebars/handlebars-1.0.rc.1',

@@ -1,6 +1,7 @@
 define([
         "backbone",
         "backbone.marionette", 
+        "bootstrap",
         "hbs!./mainview.tmpl",
         "./form/buildinginfoform",
         "./form/productionform",
@@ -13,6 +14,7 @@ define([
         "./map/mapview",
         "../models/mapposition",
         "../helpers/helptextvent",
+        "./welcomeview",
 
         "text!./helptexts/buildinginfo.txt",
         "text!./helptexts/production.txt"
@@ -20,6 +22,7 @@ define([
     function(
         Backbone,
         Marionette, 
+        bootstrap,
         tmpl,
         BuildingInfoForm,
         ProductionForm,
@@ -32,6 +35,7 @@ define([
         MapView,
         MapPosition,
         HelpText,
+        WelcomeView,
         BuildingHelpText,
         ProductionHelpText
     ) {
@@ -52,7 +56,11 @@ define([
             form        : '.control-form',
             charts      : '.chart-area',
             map         : '.map',
-            helptext    : '.helptext'
+            helptext    : '.helptext',
+            welcome     : '#welcome-view'
+        },
+        events: {
+          "click #welcome-link": "displayWelcomeDialog"
         },
         initialize: function(options) {
             _.bindAll(this);
@@ -129,6 +137,9 @@ define([
             
             this.producers.fetch();
             this.buildings.fetch();
+        },
+        displayWelcomeDialog: function() {
+            this.welcome.show(new WelcomeView());
         }
     });
     return MainView;
