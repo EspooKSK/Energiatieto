@@ -69,7 +69,6 @@ div.navbar {
     width: 80%;
     min-width: 1000px;
     margin: 0 auto;
-    box-shadow: -7px 0 8px #AAAAAA, 7px 0 8px #AAAAAA;
 }
 
 .wide { /* Sits inside the containerMaster, holds the shadow bitmap, the panels and expands vertically depending on the content in panelLeft */
@@ -78,6 +77,7 @@ div.navbar {
     /*background-image: url(/images/shadow.png);*/
     background-color: #FFF;
     overflow: hidden;
+    box-shadow: -7px 0 8px #AAAAAA, 7px 0 8px #AAAAAA;
 }
 
 .footer {
