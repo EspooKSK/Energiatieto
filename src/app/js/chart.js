@@ -226,7 +226,20 @@ define([
                             .selectAll("rect")
                             .data(data);
               
-                var formatTooltipNumber;
+                function formatTooltipNumber(d) {
+                    function threeDigitsWithAtMostTwoDecimals(d) {
+                        var decimals = 2;
+                        var abs = Math.abs(d);
+                        if (abs >= 100) {
+                            decimals = 0;
+                        } else if (abs >= 10) {
+                            decimals = 1;
+                        }
+                        var coefficient = Math.pow(10, decimals);
+                        return Math.round(coefficient * d) / coefficient;
+                    }
+                    return threeDigitsWithAtMostTwoDecimals(d);
+                };
 
                 rect.enter()
                     .append("rect")
@@ -254,21 +267,6 @@ define([
                     }).each(function() {
                         $(this).tipsy({ gravity: 's' });
                     });
-
-                formatTooltipNumber = function (d) {
-                    function threeDigitsWithAtMostTwoDecimals(d) {
-                        var decimals = 2;
-                        var abs = Math.abs(d);
-                        if (abs >= 100) {
-                            decimals = 0;
-                        } else if (abs >= 10) {
-                            decimals = 1;
-                        }
-                        var coefficient = Math.pow(10, decimals);
-                        return Math.round(coefficient * d) / coefficient;
-                    }
-                    return threeDigitsWithAtMostTwoDecimals(d);
-                };
             });
 
             drawValuelines(range);
