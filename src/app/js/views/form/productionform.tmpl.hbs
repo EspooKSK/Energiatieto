@@ -46,16 +46,13 @@
         </div>
 
    
-        <div class='controlform-divider'>Laskennassa käytetyt tiedot</div>
+        <div class='controlform-divider'></div>
 
         <div class='control-group'>
-                <label class='et-control-label'>Näytä</label>
-                <div class='et-controls'>
-                    <input type='checkbox' class='input-medium re-render' name='showSolarInstallationData'>
-                </div>
+                <button type='button' class='et-control-button btn toggle-show-details-btn'><i class='toggle-show-details-icon icon-chevron-down'></i> Laskennassa käytetyt tiedot</button>
         </div>
 
-        {{#if showSolarInstallationDataIsTrue}}
+        <div class='background-details'>
             <div class="et-info">
                 <p>
                     Kattopinnan säteily- ja pinta-alatiedot saadaan Espoon aurinkoenergiakartasta. Auringon sätelyn jakautuminen sekä ulkoilman lämpötila vuoden eri tunneille arvioidaan referenssivuoden säätietojen perusteella.
@@ -211,7 +208,7 @@
                     <input type='text' class='et-input-micro' name='reservoirCapacityDimensioning'><span class="et-unit">vrk kulutus</span>
                 </div>
             </div>
-        {{/if}}
+        </div>
 
     </div>
     {{/if}}
@@ -265,16 +262,13 @@
             </div>   
         </div>
 
-        <div class='controlform-divider'>Laskennassa käytetyt tiedot</div>
+        <div class='controlform-divider'></div>
 
         <div class='control-group'>
-                <label class='et-control-label'>Näytä</label>
-                <div class='et-controls'>
-                    <input type='checkbox' class='input-medium re-render' name='showBoreholeData'>
-                </div>
+                <button type='button' class='et-control-button btn toggle-show-details-btn'><i class='toggle-show-details-icon icon-chevron-down'></i> Laskennassa käytetyt tiedot</button>
         </div>
 
-        {{#if showBoreholeDataIsTrue}}
+        <div class='background-details'>
             <div class="et-info">
                 <p>
                     Kallioperän kivilajitiedot saadaan Geologian tutkimuskeskuksen kartta-aineistosta.
@@ -380,7 +374,7 @@
                 </div>   
             </div>                                                                                 
 
-        {{/if}}
+        </div>
 
     </div>
     {{/if}}

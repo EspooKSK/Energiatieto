@@ -47,19 +47,21 @@ define([
                 },
                 electricityConsumptionEstimatedNOT: function() {
                     return ( this.electricityConsumptionEstimated === false || this.electricityConsumptionEstimated === undefined );
-                },
-                showBackgroundDataIsTrue: function() {
-                    return ( this.showBackgroundData === true );
                 }
             },
             modelEvents: {
                 "change": "modelChanged"
             },
             events: {
-                "click .delete": "destroyModel"
+                "click .delete": "destroyModel",
+                "click .toggle-show-details-btn": "toggleBackgroundData"
             },
             destroyModel: function() {
                 this.model.destroy();
+            },
+            toggleBackgroundData: function() {
+                this.$('.toggle-show-details-icon').toggleClass('icon-chevron-down').toggleClass('icon-chevron-up');
+                this.$('.background-details').slideToggle();
             },
             // re-renders the form if element bound to changed property has class ".re-render"
             modelChanged: function(model, event) {
@@ -88,6 +90,7 @@ define([
                     return value && value.formatted_address;
                 };
                 this.modelBinder.bind(this.model, this.el, bindings);
+                this.$('.background-details').hide();
             },
             onClose: function() {
                 this.modelBinder.unbind();

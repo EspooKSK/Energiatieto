@@ -28,21 +28,23 @@ define([
                 showSolarInstallationDataIsTrue: function() {
                     return ( this.showSolarInstallationData === true );
                 },
-                showBoreholeDataIsTrue: function() {
-                    return ( this.showBoreholeData === true );
-                },
                 roofArea: function() {
                     return Number(this.roofArea);
                 }
             },
             events: {
-                "click .delete": "destroyModel"
+                "click .delete": "destroyModel",
+                "click .toggle-show-details-btn": "toggleBackgroundData"
             },
             modelEvents: {
                 "change": "modelChanged"
             },
             destroyModel: function() {
                 this.model.destroy();
+            },
+            toggleBackgroundData: function() {
+                this.$('.toggle-show-details-icon').toggleClass('icon-chevron-down').toggleClass('icon-chevron-up');
+                this.$('.background-details').slideToggle();
             },
             // re-renders the form if element bound to changed property has class ".re-render"
             modelChanged: function(model, event) {
@@ -69,6 +71,8 @@ define([
                 initializeAreaSliders();
                 var bindings = getBindings();
                 this.modelBinder.bind(this.model, this.el, bindings);
+
+                this.$('.background-details').hide();
 
                 return bindings;
 

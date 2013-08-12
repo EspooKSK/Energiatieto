@@ -349,16 +349,13 @@
         
         <!-- ___________________________________________________________________________________________ --> 
 
-        <div class='controlform-divider'>Laskennassa käytetyt tiedot</div>
+        <div class='controlform-divider'></div>
 
         <div class='control-group'>
-                <label class='et-control-label'>Näytä</label>
-                <div class='et-controls'>
-                    <input type='checkbox' class='input-medium re-render' name='showBackgroundData'>
-                </div>
+                <button type='button' class='et-control-button btn toggle-show-details-btn'><i class='toggle-show-details-icon icon-chevron-down'></i> Laskennassa käytetyt tiedot</button>
         </div>
 
-        {{#if showBackgroundDataIsTrue}}
+        <div class='background-details'>
             <div class="et-info">
                 <p>
                     Ostoenergiankulutuksen normituksessa hyödynnetään Espoon alueen toteutuneita lämmitystarvelukuja vuosilta 2008-2012.
@@ -438,7 +435,7 @@
                     <input type='text' class='et-input-micro' name='nominalElectricityConsumption'><span class="et-unit">kWh/m&sup2</span>
                 </div>
             </div>
-        {{/if}}
+        </div>
 
     </div> 
 </div>

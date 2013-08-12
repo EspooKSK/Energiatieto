@@ -291,6 +291,15 @@ div.navbar {
     vertical-align: middle;
 }
 
+.form-horizontal .et-control-button {
+    width: auto;
+    margin-left: 1.6em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding: 0.4em;
+    padding-right: 1em;
+}
+
 .et-unit {                                  /* mikko */
     margin-left: 4px;
     vertical-align: bottom;
