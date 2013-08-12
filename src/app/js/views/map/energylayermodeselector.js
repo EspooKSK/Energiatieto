@@ -13,16 +13,16 @@ define([
                 "click .geoenergy": "geoenergy"
             },
             solar: function() {
-                this.$(".geoenergy").addClass("btn-inverse");
-                this.$(".solar").removeClass("btn-inverse");
+                this.$(".geoenergy").removeClass("active");
+                this.$(".solar").addClass("active");
                 this.trigger("solar");
             },
             onShow: function() {
                 this.delegateEvents();
             },
             geoenergy: function() {
-                this.$(".solar").addClass("btn-inverse");
-                this.$(".geoenergy").removeClass("btn-inverse");
+                this.$(".geoenergy").addClass("active");
+                this.$(".solar").removeClass("active");
                 this.trigger("geoenergy");
             }
         });

@@ -9,12 +9,12 @@ define([
             },
             clickBtn: function(event) {
                 var btn = this.$(".btn");
-                if (btn.hasClass("btn-inverse")) {
-                    btn.removeClass("btn-inverse");
-                    this.trigger("activate");
-                } else {
-                    btn.addClass("btn-inverse");
+                if (btn.hasClass("active")) {
+                    btn.removeClass("active");
                     this.trigger("deactivate");
+                } else {
+                    btn.addClass("active");
+                    this.trigger("activate");
                 }
             },
             onShow: function() {
