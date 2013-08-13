@@ -114,6 +114,10 @@ div.navbar {
     margin-left: 560px;
 }
 
+.infoarea {
+    height: 150px;
+}
+
 .chart-area {
     margin-left: 0px;
     min-height: 100%;
@@ -412,12 +416,19 @@ form.search span.searchbox {
     clear: both;
 }
 
-.chart-area h4 {
+.chart-area .chart-title {
     font-weight: normal;
     margin-top: 0;
     margin-left: 20px;
     font-size: 90%;
 }
+
+.chart-area .additionalchart-title {
+    font-weight: normal;
+    margin-left: 20px;
+    font-size: 90%;
+}
+
 .chart-area .chart-unit {
     float: left;
 }
@@ -430,6 +441,16 @@ form.search span.searchbox {
     top: 0px;
     right: 0px;
     margin-right: -1em;
+}
+
+.chart-area .chart-xaxis-title {
+    /*text-align: center;*/
+    font-size: 70%;
+    color: #646464;
+    text-rendering: optimizelegibility;
+    margin-top: -5px;
+    margin-bottom: 0px;
+    margin-left: 40px;
 }
 
 .control-form label:after {
@@ -470,6 +491,10 @@ form.search span.searchbox {
  .chart rect:hover {
     fill: rgb(225, 196, 45);
  }
+ 
+.chart .close {
+    margin-bottom: 0px;
+}
 
  
 #welcome-link {
