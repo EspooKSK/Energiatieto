@@ -152,4 +152,17 @@ describe('chart.utils', function() {
         assert.equal(0.25, Utils.perPixelValue([-10, 15], 100));
     });
 
+    it('rounds numbers to three digits plus at most two decimal points', function() {
+        assert.equal(Utils.roundToThreeDigitsWithAtMostTwoDecimals(12), 12);
+        assert.equal(Utils.roundToThreeDigitsWithAtMostTwoDecimals(12.235), 12.2);
+        assert.equal(Utils.roundToThreeDigitsWithAtMostTwoDecimals(12.235789), 12.2);
+        assert.equal(Utils.roundToThreeDigitsWithAtMostTwoDecimals(123.9218), 124);
+        assert.equal(Utils.roundToThreeDigitsWithAtMostTwoDecimals(1231903.0218), 1231903);
+        assert.equal(Utils.roundToThreeDigitsWithAtMostTwoDecimals(0.0238), 0.02);
+        assert.equal(Utils.roundToThreeDigitsWithAtMostTwoDecimals(0.0258), 0.03);
+        assert.equal(Utils.roundToThreeDigitsWithAtMostTwoDecimals(-9.0258), -9.03);
+        assert.equal(Utils.roundToThreeDigitsWithAtMostTwoDecimals(-19.0258), -19);
+        assert.equal(Utils.roundToThreeDigitsWithAtMostTwoDecimals(-199.0258), -199);
+    });
+
 });
