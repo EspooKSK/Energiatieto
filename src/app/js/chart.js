@@ -225,21 +225,6 @@ define([
                 var rect = d3.select(this)
                             .selectAll("rect")
                             .data(data);
-              
-                function formatTooltipNumber(d) {
-                    function threeDigitsWithAtMostTwoDecimals(d) {
-                        var decimals = 2;
-                        var abs = Math.abs(d);
-                        if (abs >= 100) {
-                            decimals = 0;
-                        } else if (abs >= 10) {
-                            decimals = 1;
-                        }
-                        var coefficient = Math.pow(10, decimals);
-                        return Math.round(coefficient * d) / coefficient;
-                    }
-                    return threeDigitsWithAtMostTwoDecimals(d);
-                };
 
                 rect.enter()
                     .append("rect")
@@ -253,7 +238,7 @@ define([
                 rect.exit().remove();
 
                 rect.on("click", onclickdelegate)
-                    .attr("title", formatTooltipNumber)
+                    .attr("title", Utils.roundToThreeDigitsWithAtMostTwoDecimals)
                     .transition()
                     .duration(500)
                     .attr("y", newyCoordFn(data, range, series, layerIndex++))

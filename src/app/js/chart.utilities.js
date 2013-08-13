@@ -102,6 +102,20 @@ define([
                     return (Math.abs(max) + Math.abs(min)) / height;
                 }
             };
+
+            this.roundToThreeDigitsWithAtMostTwoDecimals = function(d) {
+              var abs = Math.abs(d);
+              var decimals;
+              if (abs >= 100) {
+                decimals = 0;
+              } else if (abs >= 10) {
+                decimals = 1;
+              } else {
+                decimals = 2;
+              }
+              var coefficient = Math.pow(10, decimals);
+              return Math.round(coefficient * d) / coefficient;
+            };
         };
 
         return new Utils();
