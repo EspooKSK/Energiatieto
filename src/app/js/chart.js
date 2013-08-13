@@ -19,7 +19,6 @@ define([
 
             zeroPoint = 84,
         
-            labelDecimals = 2,
             horizLinesCount = 4,
             quantileCount = 2,
 
@@ -33,7 +32,6 @@ define([
 
         var datumHeight = function(data, d, range) {
             var height = Utils.height(d, getColumnMaxHeight(), range.max, range.min);
-            //var height = Utils.heightOfElement(data, d, getColumnMaxHeight());
             return (isNaN(height) ? 0 : height);
         };
 
@@ -122,7 +120,6 @@ define([
         };
 
         var drawValuelines = function(range) {
-            // zero point
             var zeroPoint = getColumnMaxHeight() + paddingTop;
             if (range.max !== range.min) {
                 zeroPoint = Utils.offset(0, getColumnMaxHeight(), range.max, range.min) + paddingTop;
@@ -177,29 +174,28 @@ define([
 
         this.onclick = function() {};
 
+        var getCategories = function(columnWidth){
+          return chart.selectAll("text.category")
+            .data(function(d, i) {
+              return _.range(1, _.max(_(dataSource.getData()).map(function(it) {
+                return it.length;
+              })) + 1);
+            })
+            .enter()
+            .append("text")
+            .text(String)
+            .attr("class", "category")
+            .attr("y", height - 2)
+            .attr("x", function(d, i) { return paddingLeft + 10 + i * columnWidth + (columnWidth / 2) - 5; });
+        };
+
         this.draw = function() {
             var series = dataSource.getData(),
                 range = dataSource.getRange();
 
-            //var columnAreaWidth = width - paddingLeft;
-            var columnAreaHeight = height - paddingTop;
             var columnWidth = columnAreaWidth / dataSource.numDataPoints();
-
-            // categories
-            var categories = chart
-                .selectAll("text.category")
-                .data(function(d, i) {
-                    return _.range(1, _.max(_(dataSource.getData()).map(function(it) {
-                        return it.length;
-                    })) + 1);
-                })
-                .enter()
-                .append("text")
-                .text(String)
-                .attr("class", "category")
-                .attr("y", height - 2)
-                .attr("x", function(d, i) { return paddingLeft + 10 + i * columnWidth + (columnWidth / 2) - 5; });
-
+            var categories = getCategories(columnWidth);
+          
             var layers = 
                  d3.select(element)
                     .selectAll("g.layer")
