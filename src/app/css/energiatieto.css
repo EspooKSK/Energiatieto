@@ -74,7 +74,6 @@ div.navbar {
 .wide { /* Sits inside the containerMaster, holds the shadow bitmap, the panels and expands vertically depending on the content in panelLeft */
     position: relative;
     min-height: 100%;
-    /*background-image: url(/images/shadow.png);*/
     background-color: #FFF;
     overflow: hidden;
     box-shadow: -7px 0 8px #AAAAAA, 7px 0 8px #AAAAAA;
