@@ -1,9 +1,8 @@
 define([
-    "backbone.marionette", 
-    "./controlformview"
-    ], function(Marionette, ControlFormView) {
+    "backbone.marionette" 
+    ], function(Marionette) {
+
         return Marionette.CollectionView.extend({
-            itemView: ControlFormView,
             onItemAdded: function(itemView) {
                 itemView.on("delete", this.removeItemFn(itemView));
             },
@@ -15,6 +14,9 @@ define([
             },
             onItemRemoved: function(itemView) {
                 itemView.off("delete");
+            },
+            appendHtml: function(collectionView, itemView, index) {
+                collectionView.$el.prepend(itemView.el);
             }
-        });
+        }); 
 });

@@ -15,6 +15,7 @@ define([
         "../models/mapposition",
         "../helpers/helptextvent",
         "./welcomeview",
+        "./controlformcollectionview",
 
         "text!./helptexts/buildinginfo.txt",
         "text!./helptexts/production.txt"
@@ -36,6 +37,7 @@ define([
         MapPosition,
         HelpText,
         WelcomeView,
+        ControlFormCollectionView,
         BuildingHelpText,
         ProductionHelpText
     ) {
@@ -70,12 +72,6 @@ define([
                 chartModel = this.chartModel = new ChartAreaModel(options.model),
                 producers  = this.producers  = EnergyProducers;
 
-            this.bindTo(this.buildings, "select", this.showBuildingInfoForm);
-            this.bindTo(this.buildings, "remove", this.showBuildingInfoForm);
-
-            this.bindTo(this.producers,  "select", this.showProductionForm);
-            this.bindTo(this.producers,  "remove", this.showProductionForm);
-
             this.producers.attachTo(this.model, "producers");
             this.buildings.attachTo(this.model, "buildings");
 
@@ -97,28 +93,17 @@ define([
                     id: 'map-view-pos'
                 })
             });
+
+            this.buildingsFormCollectionView = new ControlFormCollectionView({ collection: SelectedBuildings, itemView: BuildingInfoForm });
+            this.procudersFormCollectionView = new ControlFormCollectionView({ collection: EnergyProducers, itemView: ProductionForm });
         },
         showBuildingInfoForm: function() {
             HelpText.trigger("change", BuildingHelpText);
-            var model = this.buildings.getSelected();
-            if (!model) {
-                this.form.close();
-            } else {
-                this.form.show(new BuildingInfoForm({
-                    model: model
-                }));
-            }
+            this.form.show(this.buildingsFormCollectionView);
         },
         showProductionForm: function() {
             HelpText.trigger("change", ProductionHelpText);
-            var model = this.producers.getSelected();
-            if (!model) {
-                this.form.close();
-            } else {
-                this.form.show(new ProductionForm({
-                    model: model
-                }));
-            }
+            this.form.show(this.procudersFormCollectionView);
         },
         selectMapView: function(view) {
             if(view === "production") {
@@ -133,7 +118,7 @@ define([
             this.helptext.show(new HelpTextView({
                 model: new Backbone.Model()
             }));
-            HelpText.trigger("change", BuildingHelpText);
+            this.showBuildingInfoForm();
             
             this.producers.fetch();
             this.buildings.fetch();

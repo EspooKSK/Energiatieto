@@ -4,8 +4,10 @@ define([
     "backbone.modelbinder",
     "../../helpers/helptextvent",
     "text!../helptexts/production.txt",
-    "jquery-ui"
-    ], function(Marionette, tmpl, ModelBinder, HelpTextVent, HelpText, jqueryUi) {
+    "jquery-ui",
+    "../../models/energyproducers"
+    ], function(Marionette, tmpl, ModelBinder, HelpTextVent, HelpText, jqueryUi, EnergyProducers) {
+
         return Marionette.ItemView.extend({
             template: {
                 template: tmpl,
@@ -30,6 +32,10 @@ define([
                 },
                 roofArea: function() {
                     return Number(this.roofArea);
+                },
+                isSelected: function() {
+                    var selectedObj = EnergyProducers.getSelected();
+                    return selectedObj && (this.id === selectedObj.id);
                 }
             },
             events: {
@@ -37,7 +43,9 @@ define([
                 "click .toggle-show-details-btn": "toggleBackgroundData"
             },
             modelEvents: {
-                "change": "modelChanged"
+                "change": "modelChanged",
+                "selected": "render",
+                "deselect": "render"
             },
             destroyModel: function() {
                 this.model.destroy();

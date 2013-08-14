@@ -182,7 +182,7 @@ div.navbar {
 
 .controlform-frame {
     margin-top: 20px;
-    padding-bottom: 20px;
+    padding-bottom: 0;
     margin-bottom: 20px; /* mikko */
     width: auto;
     border-width: 1px;
@@ -194,10 +194,11 @@ div.navbar {
     background-color: #d9d9d9;
     height: 25px;
     width: auto;
-    padding-top: 5px;
+    padding-top: 0.4em;
+    padding-left: 1em;
 }
 .controlform-frame-content {
-    padding-top: 20px;
+    padding-top: 0;
 }
 
 .controlform-divider {
@@ -246,6 +247,7 @@ div.navbar {
 
 .control-form .control-group {
     margin-bottom: 0px;
+    margin-top: 0.4em;
 }
 
  .helptext, .indent {
@@ -256,6 +258,10 @@ div.navbar {
     float: right;
     margin-right: 0.5em;
     cursor: pointer;
+}
+
+.control-form .accordion-toggle {
+    padding: 0;
 }
 
 .form-horizontal .et-data-control-label {   /* mikko */

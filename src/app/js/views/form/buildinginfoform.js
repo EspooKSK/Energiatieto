@@ -4,8 +4,9 @@ define([
     "hbs!./buildinginfoform.tmpl",
     "backbone.modelbinder",
     "../../helpers/helptextvent",
-    "text!../helptexts/buildinginfo.txt"
-    ], function(_, Marionette, tmpl, ModelBinder, HelpTextVent, HelpText) {
+    "text!../helptexts/buildinginfo.txt",
+    "../../models/selectedbuildings"
+    ], function(_, Marionette, tmpl, ModelBinder, HelpTextVent, HelpText, Buildings) {
         var roundValueConverter = function(direction, value) {
             var result = Math.round(value);
             if (isNaN(result)) {
@@ -47,10 +48,16 @@ define([
                 },
                 electricityConsumptionEstimatedNOT: function() {
                     return ( this.electricityConsumptionEstimated === false || this.electricityConsumptionEstimated === undefined );
+                },
+                isSelected: function() {
+                    var selectedBuilding = Buildings.getSelected();
+                    return selectedBuilding && (this.id === selectedBuilding.id);
                 }
             },
             modelEvents: {
-                "change": "modelChanged"
+                "change": "modelChanged",
+                "selected": "render",
+                "deselect": "render"
             },
             events: {
                 "click .delete": "destroyModel",
