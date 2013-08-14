@@ -128,8 +128,26 @@ define([
             }
             if (typeof clk === "function") {
                 opts.clickHandler = function() {
+                    self.unselectNeighborChartBar(opts.propertyName);
                     clk.apply(clk, [opts].concat([].slice.call(arguments, 0)));
                 };
+            }
+        },
+        unselectNeighborChartBar: function(propertyName){
+            var neighbors = {
+              electricityConsumption: 'heatingConsumption',
+              electricityProduction: 'heatingProduction',
+              electricityBalance: 'heatingBalance',
+              heatingConsumption: 'electricityConsumption',
+              heatingProduction: 'electricityProduction',
+              heatingBalance: 'electricityBalance'
+            };
+            var neighborChart = this.charts[neighbors[propertyName]];
+            
+            var modelChanged = !!neighborChart.chartOptions.selectedBar;
+            if(modelChanged){
+               neighborChart.chartOptions.selectedBar = null;
+               neighborChart.view.modelChanged();
             }
         },
         nestedSums: function(dataSets) {
