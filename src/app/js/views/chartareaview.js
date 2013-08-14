@@ -150,8 +150,6 @@ define([
                     sum = sumFn(dataSets);
 
                 if ('' + sum) {
-                    self.$(sumElement).text(sum + " kWh");
-                } else {
                     self.$(sumElement).text("");
                 }
             };
@@ -161,6 +159,7 @@ define([
         },
         additionalInfo: function(region) {
             var self = this;
+          
             return function(opts, categoryIndex) {
                 var view = new AdditionalChartView({
                     model: self.model,
@@ -169,6 +168,7 @@ define([
                     series : self.seriesFn(opts, "averages")
                 });
                 self.bindTo(view, "click:close", function() {
+                    unselectAllBars(opts);
                     region.slideUp(function() {
                         region.reset();
                         region.isVisible = false;
@@ -176,6 +176,11 @@ define([
                 });
                 region.show(view);
             };
+
+            function unselectAllBars(options){
+              options.chartOptions.selectedBar = null;
+              options.view.modelChanged();
+            }
         },
         initialize: function() {
             _.bindAll(this);
@@ -214,7 +219,10 @@ define([
                     propertyName: "electricityConsumption",
                     clickHandler: this.additionalInfo(this.firstAdditionalInfo),
                     sumElement  : ".electricity-consumption-total",
-                    chartMin    : 0
+                    chartMin    : 0,
+                    chartOptions: {
+                        selectableBars: true
+                    }
                 },
                 heatingConsumption: {
                     propertyName: "heatingConsumption",
@@ -222,14 +230,18 @@ define([
                     sumElement  : ".heating-consumption-total",
                     chartMin    : 0,
                     chartOptions: {
-                        showQuantiles: true
+                        showQuantiles: true,
+                        selectableBars: true
                     }
                 },
                 electricityProduction: {
                     propertyName: "electricityProduction",
                     clickHandler: this.additionalInfo(this.secondAdditionalInfo),
                     sumElement  : ".electricity-production-total",
-                    chartMin    : 0
+                    chartMin    : 0,
+                    chartOptions: {
+                        selectableBars: true
+                    }
                 },
                 heatingProduction: {
                     propertyName: "heatingProduction",
@@ -237,7 +249,8 @@ define([
                     sumElement  : ".heating-production-total",
                     chartMin    : 0,
                     chartOptions: {
-                        showQuantiles: true
+                        showQuantiles: true,
+                        selectableBars: true
                     }
                 },
                 electricityBalance: {
@@ -252,7 +265,11 @@ define([
                         
                         return pos + " / " + Math.abs(neg);
                     },
-                    clickHandler: this.additionalInfo(this.thirdAdditionalInfo)
+                    clickHandler: this.additionalInfo(this.thirdAdditionalInfo),
+                    chartOptions: {
+                        showQuantiles: true,
+                        selectableBars: true
+                    }
                 },
                 heatingBalance: {
                     propertyName: "heatingBalance",
@@ -270,7 +287,8 @@ define([
                     },
                     clickHandler: this.additionalInfo(this.thirdAdditionalInfo),
                     chartOptions: {
-                        showQuantiles: true
+                        showQuantiles: true,
+                        selectableBars: true
                     }
                 }
             };

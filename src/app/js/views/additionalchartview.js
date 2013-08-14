@@ -17,21 +17,26 @@ define([
         },
         onShow: function() {
             var self = this;
-            this.chart.show(new ChartView({
+            this.chartView = new ChartView({
                 model: this.model,
                 series: function() {
-                    var ser = self.options.series(),
+                    var series = self.options.series(),
                         ret = {};
-                    _.each(ser, function(month, key) {
+                    _.each(series, function(month, key) {
                         ret[key] = month[self.options.categoryIndex];
                     });
                     return ret;
                 },
                 propertyName  : this.options.propertyName,
                 chartOptions: {
-                    width: 550
+                    width: 550,
+                    selectableBars: false
                 }
-            }));
-        }
+            });
+            this.chart.show(this.chartView);
+        },
+      modelChanged: function() {
+          this.chartView.modelChanged();
+      }
     });
 });

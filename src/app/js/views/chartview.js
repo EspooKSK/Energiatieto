@@ -32,15 +32,22 @@ define([
             onShow: function() {
                 var model = this.model,
                     self  = this;
+              
+                var options = this.options.chartOptions || {};
 
                 this.chart = new Chart(
                     this.$("svg")[0],
                     this.dataSource,
-                    this.options.chartOptions || {}
+                    options
                 ).draw();
-                this.chart.onclick = function(value, category) {
-                    self.trigger("click", category);
-                };
+
+                if(options.selectableBars){
+                  this.chart.onclick = function(value, category) {
+                      self.trigger("click", category);
+                      options.selectedBar = category;
+                      self.modelChanged();
+                  };
+                }
             },
             modelChanged: function() {
                 if (this.chart && this.seriesSource()) {

@@ -119,6 +119,8 @@ define([
             self.onclick.apply(self.onclick, arguments);
         };
 
+        this.onclick = function() {};
+
         var drawValuelines = function(range) {
             var zeroPoint = getColumnMaxHeight() + paddingTop;
             if (range.max !== range.min) {
@@ -171,8 +173,6 @@ define([
 
             valueLines.exit().remove();
         };
-
-        this.onclick = function() {};
 
         var getCategories = function(columnWidth){
           return chart.selectAll("text.category")
@@ -243,8 +243,19 @@ define([
                     })
                     .attr("width", columnWidth - columnGap)
                     .attr("height", newHeightFn(data, range))
-                    .attr("class", function(d) {
-                        return d < 0 ? "negative": "";
+                    .attr("class", function(d, i) {
+                        var newClass;
+                        if(d < 0){
+                          newClass = "negative";
+                        } else {
+                          newClass = "";
+                        }
+
+                        if(options.selectedBar === i){
+                          newClass += " selected";
+                        }
+
+                        return newClass;
                     }).each(function() {
                         $(this).tipsy({ gravity: 's' });
                     });

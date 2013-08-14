@@ -496,6 +496,14 @@ form.search span.searchbox {
     margin-bottom: 0px;
 }
 
+.chart rect.selected {
+    fill: #1e90ff;
+}
+
+.chart rect:hover.selected {
+    fill: #00bfff;
+}
+
  
 #welcome-link {
     margin-left: 0;
