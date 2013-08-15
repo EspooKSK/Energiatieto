@@ -62,7 +62,8 @@ define([
             welcome     : '#welcome-view'
         },
         events: {
-          "click #welcome-link": "displayWelcomeDialog"
+          "click #welcome-link": "displayWelcomeDialog",
+          'click #clearAllMapObjectsButton': 'clearAllMapObjects'
         },
         initialize: function(options) {
             _.bindAll(this);
@@ -125,6 +126,10 @@ define([
         },
         displayWelcomeDialog: function() {
             this.welcome.show(new WelcomeView());
+        },
+        clearAllMapObjects: function() {
+            this.buildings.reset();
+            this.producers.reset();
         }
     });
     return MainView;
