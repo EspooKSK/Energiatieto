@@ -53,7 +53,7 @@ a:hover, a:active, a:focus {
 div.navbar {
     position: relative;
     width: 100%;
-    z-index: 1030;
+    z-index: 1000;
 }
 
 .navbar-inner {
@@ -361,6 +361,20 @@ span.brand-header {
     text-rendering: optimizelegibility;
 }
 
+a.header-link {
+    font-family: 'Lato', sans-serif;
+    cursor: pointer;
+    font-size: 1.5em;
+    font-weight: bold;
+    display: block;
+    margin-left: 1em;
+    text-rendering: optimizelegibility;
+}
+
+.popover-text {
+    margin-bottom: 1em;
+}
+
 .control-form label, .control-form input, .control-form select {
     font-size: 0.85em;
     text-rendering: optimizelegibility;
@@ -508,12 +522,6 @@ form.search span.searchbox {
 
 .chart rect:hover.selected {
     fill: #00bfff;
-}
-
- 
-#welcome-link {
-    margin-left: 0;
-    cursor: pointer;
 }
 
 .modal a{

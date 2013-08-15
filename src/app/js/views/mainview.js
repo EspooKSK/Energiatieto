@@ -3,6 +3,7 @@ define([
         "backbone.marionette", 
         "bootstrap",
         "hbs!./mainview.tmpl",
+        "hbs!./clearconfirmation.tmpl",
         "./form/buildinginfoform",
         "./form/productionform",
         "./form/purchasedform",
@@ -25,6 +26,7 @@ define([
         Marionette, 
         bootstrap,
         tmpl,
+        clearconfirmationtmpl,
         BuildingInfoForm,
         ProductionForm,
         PurchasedForm,
@@ -62,8 +64,7 @@ define([
             welcome     : '#welcome-view'
         },
         events: {
-          "click #welcome-link": "displayWelcomeDialog",
-          'click #clearAllMapObjectsButton': 'clearAllMapObjects'
+          "click #welcome-link": "displayWelcomeDialog"
         },
         initialize: function(options) {
             _.bindAll(this);
@@ -123,9 +124,29 @@ define([
             
             this.producers.fetch();
             this.buildings.fetch();
+            this.initClearConfirmationPopover();
         },
         displayWelcomeDialog: function() {
             this.welcome.show(new WelcomeView());
+        },
+        initClearConfirmationPopover: function() {
+            var self = this;
+            this.$('#clearAllMapObjectsButton').popover({
+                placement: 'bottom',
+                title: 'Oletko varma?',
+                html: true,
+                content: clearconfirmationtmpl
+            }).click(function(event) {
+                var popoverTarget = $(event.target);
+                $('.popover-content #confirmClearAllMapObjectsButton').click(function() {
+                    self.clearAllMapObjects();
+                    popoverTarget.popover('hide');
+                });
+                $('.popover-content .cancel').click(function() {
+                    popoverTarget.popover('hide');
+                })
+
+            });
         },
         clearAllMapObjects: function() {
             EnergyProducers.reset();
