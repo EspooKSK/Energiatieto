@@ -128,8 +128,9 @@ define([
             this.welcome.show(new WelcomeView());
         },
         clearAllMapObjects: function() {
-            this.buildings.reset();
-            this.producers.reset();
+            EnergyProducers.reset();
+            SelectedBuildings.reset();
+            localStorage.clear();
         }
     });
     return MainView;
