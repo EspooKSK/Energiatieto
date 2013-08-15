@@ -131,21 +131,20 @@ define([
         },
         initClearConfirmationPopover: function() {
             var self = this;
-            this.$('#clearAllMapObjectsButton').popover({
+            var clearButton = this.$('#clearAllMapObjectsButton');
+            clearButton.popover({
                 placement: 'bottom',
                 title: 'Oletko varma?',
                 html: true,
                 content: clearconfirmationtmpl
-            }).click(function(event) {
-                var popoverTarget = $(event.target);
-                $('.popover-content #confirmClearAllMapObjectsButton').click(function() {
+            }).click(function() {
+                self.$('.popover-content #confirmClearAllMapObjectsButton').click(function() {
                     self.clearAllMapObjects();
-                    popoverTarget.popover('hide');
+                    clearButton.popover('hide');
                 });
-                $('.popover-content .cancel').click(function() {
-                    popoverTarget.popover('hide');
-                })
-
+                self.$('.popover-content .cancel').click(function() {
+                    clearButton.popover('hide');
+                });
             });
         },
         clearAllMapObjects: function() {
