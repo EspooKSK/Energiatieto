@@ -553,4 +553,47 @@ form.search span.searchbox {
     z-index: 2;
 }
 
+.system-cost {
+    margin: 10px;
+}
 
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.line {
+  fill: none;
+  stroke: rgb(31, 119, 180);
+  stroke-width: 1.5px;
+}
+
+.system-cost-chart-title {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.system-cost-xaxis-title {
+    text-align: center;
+}
+
+.system-cost-initial-investment {
+    text-align: center;
+}
+
+.euro {
+    font-size: 1.5em;
+}
+
+.initial-investment {
+    font-size: 2.1em;
+}
+
+.initial-investment-label {
+    font-size: 1.2em;
+    display: inline;
+    margin-right: 5px;
+}

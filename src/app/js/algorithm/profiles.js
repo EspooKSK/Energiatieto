@@ -13,6 +13,7 @@ define([
         "SystemElectricityBalance",
         "SystemHotWaterHeatingEnergyBalance",
         "SystemSpaceHeatingEnergyBalance",
+        "SystemCost",
         "Constants"
     ], 
     function(
@@ -26,6 +27,7 @@ define([
         SystemElectricityBalance,
         SystemHotWaterHeatingEnergyBalance,
         SystemSpaceHeatingEnergyBalance,
+        SystemCost,
         Constants
     ) {
         return {
@@ -45,6 +47,7 @@ define([
                                               : SystemHotWaterHeatingEnergyBalance,
             SystemSpaceHeatingEnergyBalance
                                               : SystemSpaceHeatingEnergyBalance,
+            SystemCost                        : SystemCost,
             Constants                         : new Constants()
         };
 });

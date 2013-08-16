@@ -41,7 +41,11 @@ define([
                 water: empty,
                 space: empty
             },
-            electricityBalance: empty
+            electricityBalance: empty,
+            systemCost: {
+                totalSystemCost: [],
+                initialInvestment: null
+            }
         };
 
         this.randomizeData = function() {
@@ -101,25 +105,28 @@ define([
                         });
                         return obj;
                     };
+
+                    var systemElectricityProduction = valuesFor(profiles.SystemElectricityProduction);
+                    var systemElectricityConsumption = valuesFor(profiles.SystemElectricityConsumption);
+
                     callback({
                         heatingConsumption: pivot({
                             water: valuesFor(profiles.SystemHotWaterHeatingEnergyConsumption),
                             space: valuesFor(profiles.SystemSpaceHeatingEnergyConsumption)
                         }),
-                        electricityConsumption
-                                    : valuesFor(profiles.SystemElectricityConsumption),
+                        electricityConsumption: systemElectricityConsumption,
                         heatingProduction: pivot({
                             water: valuesFor(profiles.SystemHotWaterHeatingEnergyProduction),
                             space: valuesFor(profiles.SystemSpaceHeatingEnergyProduction)
                         }),
-                        electricityProduction
-                                    : valuesFor(profiles.SystemElectricityProduction),
+                        electricityProduction: systemElectricityProduction,
                         heatingBalance: pivot({
                             water: valuesFor(profiles.SystemHotWaterHeatingEnergyBalance),
                             space: valuesFor(profiles.SystemSpaceHeatingEnergyBalance)
                         }),
-                        electricityBalance
-                                    : valuesFor(profiles.SystemElectricityBalance)
+                        electricityBalance: valuesFor(profiles.SystemElectricityBalance),
+                        systemCost: profiles.SystemCost.getSystemCost(system, profiles.Constants, 
+                                                                      systemElectricityProduction, systemElectricityConsumption)
                     });
                     return;
                 } else {

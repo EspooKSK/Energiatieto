@@ -5,8 +5,9 @@ define([
         "hbs!./chartareaview.tmpl",
         "./chartview",
         "../models/buildinginfomodel",
-        "./additionalchartview"
-    ], function($, _, Marionette, tmpl, ChartView, BuildingInfoModel, AdditionalChartView) {
+        "./additionalchartview",
+        "./systemcostview"
+    ], function($, _, Marionette, tmpl, ChartView, BuildingInfoModel, AdditionalChartView, SystemCostView) {
 
         if (!_.sum) {
             _.mixin({
@@ -38,129 +39,11 @@ define([
             heatingProduction       : "div.heating-production",
             electricityBalance      : "div.electricity-balance",
             heatingBalance          : "div.heating-balance",
+            systemCost              : "div.system-cost",
 
             firstAdditionalInfo     : "div.first-infoarea",
             secondAdditionalInfo    : "div.second-infoarea",
             thirdAdditionalInfo     : "div.third-infoarea"
-        },
-        rangeFn: function(opts) {
-            var charts = this.charts;
-            var withRanges = function(prop) {
-                return _[prop](_.map(charts, function(it) {
-                    return it.view.dataSource.getDataRange()[prop];
-                }));
-            };
-            return function() {
-                var max = withRanges("max"),
-                    min = withRanges("min");
-                return {
-                    max: max,
-                    min: typeof opts.chartMin !== "undefined" ? opts.chartMin : min
-                };
-            };
-        },
-        seriesFn: function(opts, prop) {
-            var self = this;
-            return function() {
-                var series = self.model.get("data")[opts.propertyName],
-                    ret    = {};
-                if (series[prop]) {
-                    return {
-                        total: series[prop]
-                    };
-                } else {
-                    _.each(series, function(it, key) {
-                        ret[key] = it[prop];
-                    });
-                    return ret;
-                }
-            };
-        },
-        initViewInChart: function(opts) {
-            var clk = opts.clickHandler,
-                self = this;
-            opts.view = new ChartView({
-                model         : this.model,
-                propertyName  : opts.propertyName,
-                rangeFn       : this.rangeFn(opts),
-                chartOptions  : opts.chartOptions,
-                series        : this.seriesFn(opts, "total")
-            });
-            if (opts.sumElement) {
-                this.bindTo(this.model, "change:data", this.newSumCounter(opts.propertyName, opts.sumElement, opts.sumFunction));
-            }
-            if (typeof clk === "function") {
-                opts.clickHandler = function() {
-                    self.unselectNeighborChartBar(opts.propertyName);
-                    clk.apply(clk, [opts].concat([].slice.call(arguments, 0)));
-                };
-            }
-        },
-        unselectNeighborChartBar: function(propertyName){
-            var neighbors = {
-              electricityConsumption: 'heatingConsumption',
-              electricityProduction: 'heatingProduction',
-              electricityBalance: 'heatingBalance',
-              heatingConsumption: 'electricityConsumption',
-              heatingProduction: 'electricityProduction',
-              heatingBalance: 'electricityBalance'
-            };
-            var neighborChart = this.charts[neighbors[propertyName]];
-            
-            var modelChanged = !!neighborChart.chartOptions.selectedBar;
-            if(modelChanged){
-               neighborChart.chartOptions.selectedBar = null;
-               neighborChart.view.modelChanged();
-            }
-        },
-        nestedSums: function(dataSets) {
-
-            if (dataSets.total) {
-                return Math.round(_.sum(dataSets.total));
-            } else {
-                return Math.round(_.sum(_.map(dataSets, function(val, key) {
-                    return _.sum(val.total);
-                })));
-            }
-        },
-        newSumCounter: function(propertyName, sumElement, sumFunction) {
-            var self = this;
-            return function(model) {
-                var dataSets = model.get("data")[propertyName],
-                    sumFn = sumFunction || self.nestedSums,
-                    sum = sumFn(dataSets);
-
-                var sumText = ('' + sum) ? (sum + " kWh") : "";
-                self.$(sumElement).text(sumText);
-            };
-        },
-        initViewsInCharts: function(chartOpts) {
-            _.each(_.values(chartOpts), this.initViewInChart);
-        },
-        additionalInfo: function(region) {
-            var self = this;
-          
-            return function(opts, categoryIndex) {
-                var view = new AdditionalChartView({
-                    model: self.model,
-                    chartOptions: opts.chartOptions,
-                    categoryIndex: categoryIndex,
-                    series : self.seriesFn(opts, "averages")
-                });
-                self.bindTo(view, "click:close", function() {
-                    unselectAllBars(opts);
-                    region.slideUp(function() {
-                        region.reset();
-                        region.isVisible = false;
-                    });
-                });
-                region.show(view);
-            };
-
-            function unselectAllBars(options){
-              options.chartOptions.selectedBar = null;
-              options.view.modelChanged();
-            }
         },
         initialize: function() {
             _.bindAll(this);
@@ -192,7 +75,6 @@ define([
                     });
                 };
             });
-
 
             this.charts = {
                 electricityConsumption: {
@@ -273,6 +155,129 @@ define([
                 }
             };
             this.initViewsInCharts(this.charts);
+
+            this.systemCostView = new SystemCostView({
+                model: this.model
+            });
+        },
+        initViewsInCharts: function(charts) {
+            _.each(_.values(charts), this.initViewInChart);
+        },
+        initViewInChart: function(opts) {
+            var clk = opts.clickHandler,
+                self = this;
+            opts.view = new ChartView({
+                model         : this.model,
+                propertyName  : opts.propertyName,
+                rangeFn       : this.rangeFn(opts),
+                chartOptions  : opts.chartOptions,
+                series        : this.seriesFn(opts, "total")
+            });
+            if (opts.sumElement) {
+                this.bindTo(this.model, "change:data", this.newSumCounter(opts.propertyName, opts.sumElement, opts.sumFunction));
+            }
+            if (typeof clk === "function") {
+                opts.clickHandler = function() {
+                    self.unselectNeighborChartBar(opts.propertyName);
+                    clk.apply(clk, [opts].concat([].slice.call(arguments, 0)));
+                };
+            }
+        },
+        rangeFn: function(opts) {
+            var charts = this.charts;
+            var withRanges = function(prop) {
+                return _[prop](_.map(charts, function(it) {
+                    return it.view.dataSource.getDataRange()[prop];
+                }));
+            };
+            return function() {
+                var max = withRanges("max"),
+                    min = withRanges("min");
+                return {
+                    max: max,
+                    min: typeof opts.chartMin !== "undefined" ? opts.chartMin : min
+                };
+            };
+        },
+        seriesFn: function(opts, prop) {
+            var self = this;
+            return function() {
+                var series = self.model.get("data")[opts.propertyName],
+                    ret    = {};
+                if (series[prop]) {
+                    return {
+                        total: series[prop]
+                    };
+                } else {
+                    _.each(series, function(it, key) {
+                        ret[key] = it[prop];
+                    });
+                    return ret;
+                }
+            };
+        },
+        newSumCounter: function(propertyName, sumElement, sumFunction) {
+            var self = this;
+            return function(model) {
+                var dataSets = model.get("data")[propertyName],
+                    sumFn = sumFunction || self.nestedSums,
+                    sum = sumFn(dataSets);
+
+                if ('' + sum) {
+                    self.$(sumElement).text("");
+                }
+            };
+        },
+        nestedSums: function(dataSets) {
+            if (dataSets.total) {
+                return Math.round(_.sum(dataSets.total));
+            } else {
+                return Math.round(_.sum(_.map(dataSets, function(val, key) {
+                    return _.sum(val.total);
+                })));
+            }
+        },
+        unselectNeighborChartBar: function(propertyName){
+            var neighbors = {
+              electricityConsumption: 'heatingConsumption',
+              electricityProduction: 'heatingProduction',
+              electricityBalance: 'heatingBalance',
+              heatingConsumption: 'electricityConsumption',
+              heatingProduction: 'electricityProduction',
+              heatingBalance: 'electricityBalance'
+            };
+            var neighborChart = this.charts[neighbors[propertyName]];
+            
+            var modelChanged = !!neighborChart.chartOptions.selectedBar;
+            if(modelChanged){
+               neighborChart.chartOptions.selectedBar = null;
+               neighborChart.view.modelChanged();
+            }
+        },
+        additionalInfo: function(region) {
+            var self = this;
+          
+            return function(opts, categoryIndex) {
+                var view = new AdditionalChartView({
+                    model: self.model,
+                    chartOptions: opts.chartOptions,
+                    categoryIndex: categoryIndex,
+                    series : self.seriesFn(opts, "averages")
+                });
+                self.bindTo(view, "click:close", function() {
+                    unselectAllBars(opts);
+                    region.slideUp(function() {
+                        region.reset();
+                        region.isVisible = false;
+                    });
+                });
+                region.show(view);
+            };
+
+            function unselectAllBars(options){
+              options.chartOptions.selectedBar = null;
+              options.view.modelChanged();
+            }
         },
         onShow: function() {
             var self = this;
@@ -280,6 +285,7 @@ define([
                 self[it[0]].show(it[1].view);
                 self.bindTo(it[1].view, "click", it[1].clickHandler);
             });
+            this.systemCost.show(this.systemCostView);
         }
     });
 

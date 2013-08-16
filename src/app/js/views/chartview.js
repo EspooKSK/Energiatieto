@@ -30,8 +30,7 @@ define([
                 });
             },
             onShow: function() {
-                var model = this.model,
-                    self  = this;
+                var self  = this;
               
                 var options = this.options.chartOptions || {};
 

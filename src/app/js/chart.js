@@ -26,6 +26,108 @@ define([
                       .attr("width", width)
                       .attr("height", height);
 
+        this.redraw = function() {
+            this.draw();
+        };
+
+        this.draw = function() {
+            var series = dataSource.getData(),
+                range = dataSource.getRange();
+
+            var columnWidth = columnAreaWidth / dataSource.numDataPoints();
+
+            drawXAxisLabels(columnWidth);
+          
+            var layers = d3.select(element)
+                           .selectAll("g.layer")
+                           .data(dataSource.getSeries(), function(d) {
+                               return d;
+                           });
+
+            layers.enter()
+                .append("g")
+                .attr("class", function(d) {
+                    return "layer " + d;
+                });
+
+            layers.exit().remove();
+
+            drawChartBars(series, range, columnWidth);
+            drawHorizontalLines(range);
+
+            if (options.showQuantiles) {
+                drawYAxisQuantiles(range);
+            }
+
+            return this;
+        };
+
+        var drawXAxisLabels = function(columnWidth){
+          return chart.selectAll("text.category")
+            .data(function(d, i) {
+              return _.range(1, _.max(_(dataSource.getData()).map(function(it) {
+                return it.length;
+              })) + 1);
+            })
+            .enter()
+            .append("text")
+            .text(String)
+            .attr("class", "category")
+            .attr("y", height - 2)
+            .attr("x", function(d, i) { return paddingLeft + 10 + i * columnWidth + (columnWidth / 2) - 5; });
+        };
+
+        var drawChartBars = function(series, range, columnWidth){
+            var layerIndex = 0;
+            d3.select(element).selectAll("g.layer").each(function(name) {
+                var data = series[name];
+                if (typeof data[0] !== "number") {
+                    return;
+                }
+
+                var rect = d3.select(this)
+                            .selectAll("rect")
+                            .data(data);
+
+                rect.enter()
+                    .append("rect")
+                    .attr("y", newyCoordFn(data, range, series, layerIndex))
+                    .attr("x", function(d, i) {
+                        return paddingLeft + 10 + i * columnWidth; })
+                    .attr("width", columnWidth - columnGap)
+                    .attr("height", newHeightFn(data, range));
+
+                rect.exit().remove();
+
+                rect.on("click", onclickdelegate)
+                    .attr("title", Utils.roundToThreeDigitsWithAtMostTwoDecimals)
+                    .transition()
+                    .duration(500)
+                    .attr("y", newyCoordFn(data, range, series, layerIndex++))
+                    .attr("x", function(d, i) {
+                        return paddingLeft + 10 + i * columnWidth; 
+                    })
+                    .attr("width", columnWidth - columnGap)
+                    .attr("height", newHeightFn(data, range))
+                    .attr("class", function(d, i) {
+                        var newClass;
+                        if(d < 0){
+                          newClass = "negative";
+                        } else {
+                          newClass = "";
+                        }
+
+                        if(options.selectedBar === i){
+                          newClass += " selected";
+                        }
+
+                        return newClass;
+                    }).each(function() {
+                        $(this).tipsy({ gravity: 's' });
+                    });
+            });
+        };
+
         var getColumnMaxHeight = function() {
             return chartHeight - paddingTop;
         };
@@ -68,16 +170,7 @@ define([
             };
         };
 
-        var createHorizLines = function (range, count, paddingTop) {
-            var lines   = Utils.quantilesBetween(range.max, range.min, horizLinesCount),
-                offsets = Utils.offsets(lines, chartHeight - paddingTop, range.max, range.min);
-
-            return _.map(offsets, function(it) {
-                return it + paddingTop;
-            });
-        };        
-
-        var drawQuantiles = function(range) {
+        var drawYAxisQuantiles = function(range) {
             var quantileText = function(d,i) {
                 return Math.round(d);
             };
@@ -121,35 +214,12 @@ define([
 
         this.onclick = function() {};
 
-        var drawValuelines = function(range) {
-            var zeroPoint = getColumnMaxHeight() + paddingTop;
-            if (range.max !== range.min) {
-                zeroPoint = Utils.offset(0, getColumnMaxHeight(), range.max, range.min) + paddingTop;
-            }
-            var zeroLine = d3.select(element)
-                                .selectAll("line.zero")
-                                .data([ zeroPoint ]);
+        var drawHorizontalLines = function(range) {
+            drawXAxis(range);
+            drawValueLines(range);
+        };
 
-        
-            zeroLine
-                .enter()
-                .insert("line", ":first-child")
-                .attr("class", "zero")
-                .attr("x1", paddingLeft)
-                .attr("y1", function(d) { return d; })
-                .attr("x2", width)
-                .attr("y2", function(d) { return d; })
-                .style("stroke-width", 1)
-                .attr("shape-rendering", "crispEdges");
-
-
-            zeroLine
-                .transition()
-                .duration(500)
-                .attr("y1", function(d) { return d; })
-                .attr("y2", function(d) { return d; })
-                .attr("class", "zero");
-
+        var drawValueLines = function(range){
             var valueLines = d3.select(element)
                         .selectAll("line.value")
                         .data(createHorizLines(range, horizLinesCount, paddingTop));
@@ -174,104 +244,43 @@ define([
             valueLines.exit().remove();
         };
 
-        var getCategories = function(columnWidth){
-          return chart.selectAll("text.category")
-            .data(function(d, i) {
-              return _.range(1, _.max(_(dataSource.getData()).map(function(it) {
-                return it.length;
-              })) + 1);
-            })
-            .enter()
-            .append("text")
-            .text(String)
-            .attr("class", "category")
-            .attr("y", height - 2)
-            .attr("x", function(d, i) { return paddingLeft + 10 + i * columnWidth + (columnWidth / 2) - 5; });
-        };
+        var createHorizLines = function (range, count, paddingTop) {
+            var lines   = Utils.quantilesBetween(range.max, range.min, horizLinesCount),
+                offsets = Utils.offsets(lines, chartHeight - paddingTop, range.max, range.min);
 
-        this.draw = function() {
-            var series = dataSource.getData(),
-                range = dataSource.getRange();
-
-            var columnWidth = columnAreaWidth / dataSource.numDataPoints();
-            var categories = getCategories(columnWidth);
-          
-            var layers = 
-                 d3.select(element)
-                    .selectAll("g.layer")
-                    .data(dataSource.getSeries(), function(d) {
-                        return d;
-                    });
-
-            layers.enter()
-                .append("g")
-                .attr("class", function(d) {
-                    return "layer " + d;
-                });
-
-            layers.exit().remove();
-
-            var layerIndex = 0;
-            d3.select(element).selectAll("g.layer").each(function(name) {
-                var data = series[name];
-                if (typeof data[0] !== "number") {
-                    return;
-                }
-
-                var rect = d3.select(this)
-                            .selectAll("rect")
-                            .data(data);
-
-                rect.enter()
-                    .append("rect")
-                    .attr("y", newyCoordFn(data, range, series, layerIndex))
-                    .attr("x", function(d, i) {
-                        return paddingLeft + 10 + i * columnWidth; })
-                    .attr("width", columnWidth - columnGap)
-                    .attr("height", newHeightFn(data, range));
-
-
-                rect.exit().remove();
-
-                rect.on("click", onclickdelegate)
-                    .attr("title", Utils.roundToThreeDigitsWithAtMostTwoDecimals)
-                    .transition()
-                    .duration(500)
-                    .attr("y", newyCoordFn(data, range, series, layerIndex++))
-                    .attr("x", function(d, i) {
-                        return paddingLeft + 10 + i * columnWidth; 
-                    })
-                    .attr("width", columnWidth - columnGap)
-                    .attr("height", newHeightFn(data, range))
-                    .attr("class", function(d, i) {
-                        var newClass;
-                        if(d < 0){
-                          newClass = "negative";
-                        } else {
-                          newClass = "";
-                        }
-
-                        if(options.selectedBar === i){
-                          newClass += " selected";
-                        }
-
-                        return newClass;
-                    }).each(function() {
-                        $(this).tipsy({ gravity: 's' });
-                    });
+            return _.map(offsets, function(it) {
+                return it + paddingTop;
             });
+        };        
 
-            drawValuelines(range);
+        var drawXAxis = function(range){
+          var zeroPoint = getColumnMaxHeight() + paddingTop;
+          if (range.max !== range.min) {
+            zeroPoint = Utils.offset(0, getColumnMaxHeight(), range.max, range.min) + paddingTop;
+          }
+          var zeroLine = d3.select(element)
+                .selectAll("line.zero")
+                .data([ zeroPoint ]);
 
-            if (options.showQuantiles) {
-                drawQuantiles(range);
-            }
 
-            return this;
+          zeroLine
+            .enter()
+            .insert("line", ":first-child")
+            .attr("class", "zero")
+            .attr("x1", paddingLeft)
+            .attr("y1", function(d) { return d; })
+            .attr("x2", width)
+            .attr("y2", function(d) { return d; })
+            .style("stroke-width", 1)
+            .attr("shape-rendering", "crispEdges");
+
+
+          zeroLine
+            .transition()
+            .duration(500)
+            .attr("y1", function(d) { return d; })
+            .attr("y2", function(d) { return d; })
+            .attr("class", "zero");
         };
-
-        this.redraw = function() {
-            this.draw();
-        };
-    };
+      };
 });

@@ -153,6 +153,7 @@ require.config({
         'SystemSpaceHeatingEnergyBalance'                              : '../calculation/SystemSpaceHeatingEnergyBalance',
         'SystemHotWaterHeatingEnergyBalance'                           : '../calculation/SystemHotWaterHeatingEnergyBalance',
         'SystemElectricityBalance'                                     : '../calculation/SystemElectricityBalance',
+        'SystemCost'                                                : '../calculation/SystemCost',
 
         'VantaaReferenceYearOutsideTemperature'                        : '../calculation/Profiles/vantaaReferenceYearOutsideTemperature',
         'VantaaReferenceYearTotalIrradiationOnHorizontalSurface'       : '../calculation/Profiles/vantaaReferenceYearTotalIrradiationOnHorizontalSurface',
