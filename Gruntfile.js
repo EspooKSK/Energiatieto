@@ -182,7 +182,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('run', ['jshint', 'qunit', 'functional', 'concat', 'min', 'start']);
 
-  grunt.registerTask('test', ['jshint', 'functional']);
+  grunt.registerTask('test', ['jshint', 'simplemocha:node', 'functional', 'simplemocha:client']);
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
 
