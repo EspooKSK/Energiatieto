@@ -43,43 +43,6 @@ define([
             secondAdditionalInfo    : "div.second-infoarea",
             thirdAdditionalInfo     : "div.third-infoarea"
         },
-        events: {
-            "click .subheader": "subheaderclick"
-        },
-        subheaderclick: function(event) {
-            var trgt = this.$(event.target).closest('.subheader'),
-                self = this;
-
-            this.markSelected(trgt);
-
-            _(["building-info", "production", "purchased", "costs"]).each(function(it) {
-                if (trgt.hasClass(it)) {
-                    self.trigger("select", it);
-                }
-            });
-        },
-        markSelected: function(node, silent) {
-            this.$(".arrow").animate({
-                right: '+20'
-            }, {
-                duration: 100,
-                complete: function() { 
-                    $(this).remove(); 
-                }
-            });
-            var arrow = $("<span class='arrow'></span>");
-            node.append(arrow);
-
-            if (silent) {
-                arrow.css('right', '-20px');
-            } else {
-                arrow.animate({
-                    right: '-20'
-                },{
-                    duration: 100
-                });
-            }
-        },
         rangeFn: function(opts) {
             var charts = this.charts;
             var withRanges = function(prop) {
@@ -318,7 +281,6 @@ define([
                 self[it[0]].show(it[1].view);
                 self.bindTo(it[1].view, "click", it[1].clickHandler);
             });
-            this.markSelected(this.$('h3.building-info'), true);
         }
     });
 

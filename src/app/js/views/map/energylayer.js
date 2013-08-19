@@ -4,7 +4,6 @@ define([
     "./solarmaptype",
     "./geoenergymaptype",
     "./solarmapcontrols",
-    "./energylayermodeselector",
     "../../models/solarpanel",
     "../../models/geothermalwell"
     ], function(
@@ -13,7 +12,6 @@ define([
         SolarMapType,
         GeoEnergyMapType,
         SolarMapControls,
-        EnergyLayerModeSelector,
         SolarPanel,
         GeoThermalWell) {
 
@@ -22,7 +20,6 @@ define([
 
             var geoEnergyOverlay = new GeoEnergyMapType(map);
 
-            this.modeselector = new EnergyLayerModeSelector();
             this.controls = new SolarMapControls();
             this.markerStore = new MarkerStore();
 
@@ -101,7 +98,7 @@ define([
                 collection.trigger("select", panel);
             };
 
-            this.selectSolar = function() {
+            this.selectSolarEnergy = function() {
                 self.replaceOverlay(new SolarMapType(map));
 
                 self.activate();
@@ -156,9 +153,6 @@ define([
                 });
                 self.controls.setText("Lämpökaivo");
             };
-
-            this.modeselector.on("solar", this.selectSolar);
-            this.modeselector.on("geoenergy", this.selectGeoEnergy);
 
             _.bindAll(this);
         };

@@ -24,18 +24,10 @@ define([
                 template: tmpl,
                 type: "handlebars"
             },
-            events: {
-                "submit form.search": "submitSearchForm"
-            },
             regions: {
                 controls: ".controls",
-                modeselector: ".modeselector"
             },
             layers: {
-            },
-            submitSearchForm: function(event) {
-                this.trigger("search", this.$("input[name=search]").val());
-                return false;
             },
             activate: function(layer) {
                 this.clear();
@@ -45,17 +37,13 @@ define([
                 if (typeof layer.controls !== "undefined") {
                     this.controls.show(layer.controls);
                 }
-                if (typeof layer.modeselector !== "undefined") {
-                    this.modeselector.show(layer.modeselector);
-                }
             },
             showOnlyBuildingLayer: function() {
-                this.$(".search").show();
+                // this.$(".search").show();
                 this.activate(this.layers.building);
             },
             clear: function() {
                 this.controls.close();
-                this.modeselector.close();
                 this.map.overlayMapTypes.clear();
                 _.each(_.values(this.layers), function(it) {
                     if (typeof it.deactivate === "function") {
@@ -63,10 +51,15 @@ define([
                     }
                 });
             },
-            showSolarAndGeoEnergy: function() {
-                this.$(".search").hide();
+            showSolarEnergy: function() {
+                // this.$(".search").hide();
                 this.activate(this.layers.energy);
-                this.layers.energy.selectSolar();
+                this.layers.energy.selectSolarEnergy();
+            },
+            showGeoEnergy: function() {
+                // this.$(".search").hide();
+                this.activate(this.layers.energy);
+                this.layers.energy.selectGeoEnergy();
             },
             initialize: function(options) {
                 _.bindAll(this);
@@ -88,7 +81,7 @@ define([
             },
             createMap: function() {
                 var self = this;
-                this.map = new google.maps.Map($("<div style='width: 100%; height: 500px;'/>")[0], MapStyles.options());
+                this.map = new google.maps.Map($("<div class='google-map'/>")[0], MapStyles.options());
                 this.bindTo(this, "search", function(address) {
                     new google.maps.Geocoder().geocode({
                             address: address,
@@ -129,6 +122,8 @@ define([
                     });
                 });
 
+            },
+            search: function(){
             },
             onShow: function() {
                 var self = this;

@@ -17,6 +17,8 @@ define([
         "../helpers/helptextvent",
         "./welcomeview",
         "./controlformcollectionview",
+        "./navigationview",
+        "./rightpanelview",
 
         "text!./helptexts/buildinginfo.txt",
         "text!./helptexts/production.txt"
@@ -40,6 +42,9 @@ define([
         HelpText,
         WelcomeView,
         ControlFormCollectionView,
+        NavigationView,
+        RightPanelView,
+
         BuildingHelpText,
         ProductionHelpText
     ) {
@@ -57,14 +62,17 @@ define([
             template: tmpl
         },
         regions: {
+            rightpanel  : '.panel.right',
+            navigation  : '.navigation',
             form        : '.control-form',
             charts      : '.chart-area',
-            map         : '.map',
+            map         : '.map-container',
             helptext    : '.helptext',
-            welcome     : '#welcome-view'
+            welcome     : '.welcome-view'
         },
         events: {
-          "click #welcome-link": "displayWelcomeDialog"
+          "click #welcome-link": "displayWelcomeDialog",
+          "click .search-btn": "submitSearchForm"
         },
         initialize: function(options) {
             _.bindAll(this);
@@ -76,16 +84,16 @@ define([
 
             this.producers.attachTo(this.model, "producers");
             this.buildings.attachTo(this.model, "buildings");
+          
+            this.rightPanelView = new RightPanelView();
+            this.navigationView = new NavigationView()
+              .on('showConsumption', self.showConsumption)
+              .on('showSolarProduction', self.showSolarProduction)
+              .on('showGeoProduction', self.showGeoProduction);
+          
 
             this.ChartArea = new ChartAreaView({
                 model: chartModel
-            }).on("select", function(view) {
-                if (view === "production") {
-                    self.showProductionForm();
-                } else {
-                    self.showBuildingInfoForm();
-                }
-                self.selectMapView(view);
             });
 
             this.mapView = new MapView({
@@ -97,7 +105,19 @@ define([
             });
 
             this.buildingsFormCollectionView = new ControlFormCollectionView({ collection: SelectedBuildings, itemView: BuildingInfoForm });
-            this.procudersFormCollectionView = new ControlFormCollectionView({ collection: EnergyProducers, itemView: ProductionForm });
+            this.producersFormCollectionView = new ControlFormCollectionView({ collection: EnergyProducers, itemView: ProductionForm });
+        },
+        showConsumption: function(){
+            this.showBuildingInfoForm();
+            this.mapView.showOnlyBuildingLayer();
+        },
+        showSolarProduction: function(){
+            this.showProductionForm();
+            this.mapView.showSolarEnergy();
+        },
+        showGeoProduction: function(){
+            this.showProductionForm();
+            this.mapView.showGeoEnergy();
         },
         showBuildingInfoForm: function() {
             HelpText.trigger("change", BuildingHelpText);
@@ -105,16 +125,11 @@ define([
         },
         showProductionForm: function() {
             HelpText.trigger("change", ProductionHelpText);
-            this.form.show(this.procudersFormCollectionView);
-        },
-        selectMapView: function(view) {
-            if(view === "production") {
-                this.mapView.showSolarAndGeoEnergy();
-            } else {
-                this.mapView.showOnlyBuildingLayer();
-            }
+            this.form.show(this.producersFormCollectionView);
         },
         onShow: function() {
+            this.rightpanel.show(this.rightPanelView);
+            this.navigation.show(this.navigationView);
             this.map.show(this.mapView);
             this.charts.show(this.ChartArea);
             this.helptext.show(new HelpTextView({
@@ -151,7 +166,12 @@ define([
             EnergyProducers.reset();
             SelectedBuildings.reset();
             localStorage.clear();
-        }
+        },
+        submitSearchForm: function(event) {
+          var address = this.$("input[name=search]").val();
+          this.mapView.trigger("search", address);
+          return false;
+        },
     });
     return MainView;
 });
