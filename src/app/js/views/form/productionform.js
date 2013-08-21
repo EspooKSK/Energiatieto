@@ -96,6 +96,7 @@ define([
                     slide: function (event, ui){
                       var value = ui.value;
                       self.model.set('photovoltaicArea', value);
+                      self.onSliderValueChange($(this));
                     }
                   });
 
@@ -105,6 +106,7 @@ define([
                     slide: function (event, ui){
                       var value = ui.value;
                       self.model.set('thermalArea', value);
+                      self.onSliderValueChange($(this));
                     }
                   });
                 }
@@ -113,11 +115,13 @@ define([
                     bindings.photovoltaicArea = { selector: '[name="photovoltaicArea"]',
                                                   converter: function(direction, value, attr, model, els){
                                                     self.$( "#photovoltaicAreaSlider" ).slider( "value", value );
+                                                    self.onSliderValueChange(self.$( "#photovoltaicAreaSlider" ));
                                                     return value;
                                                   }};
                     bindings.thermalArea = { selector: '[name="thermalArea"]',
                                              converter: function(direction, value, attr, model, els){
                                                self.$( "#thermalAreaSlider" ).slider( "value", value );
+                                               self.onSliderValueChange(self.$( "#thermalAreaSlider" ))
                                                return value;
                                              }};
                     return bindings;
@@ -125,6 +129,19 @@ define([
             },
             onClose: function() {
                 this.modelBinder.unbind();
+            },
+            onSliderValueChange: function(activeSlider) {
+                var sliders = this.$('#photovoltaicAreaSlider, #thermalAreaSlider'),
+                    otherSlider = sliders.not(activeSlider),
+
+                    roofArea = this.model.get('roofArea'),
+
+                    usedRoofArea = _.reduce(sliders, function(memo, slider) { return memo + $(slider).slider('value') }, 0),
+                    remainingRoofArea = roofArea - usedRoofArea,
+
+                    otherSliderMaxValue = otherSlider.slider('value') + remainingRoofArea;
+
+                    otherSlider.slider('option', 'max', otherSliderMaxValue);
             }
         });
 });
