@@ -19,6 +19,7 @@ module.exports = function(grunt) {
         });
         
         grunt.task.run('simplemocha:functional');
+        //grunt.task.run('simplemocha');
         grunt.task.run('shutdown-functional-server');
     });
     grunt.registerTask("shutdown-functional-server", "Shutdown the functional test server.", function(prop) {

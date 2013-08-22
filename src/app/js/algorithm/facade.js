@@ -44,6 +44,7 @@ define([
             electricityBalance: empty,
             systemCost: {
                 totalSystemCost: [],
+                comparisonCost: [],
                 initialInvestment: null
             }
         };
@@ -108,6 +109,12 @@ define([
 
                     var systemElectricityProduction = valuesFor(profiles.SystemElectricityProduction);
                     var systemElectricityConsumption = valuesFor(profiles.SystemElectricityConsumption);
+                    var annualElectricityProduction = _.reduce(systemElectricityProduction.total, function(prodSum, monthlyTotal){
+                      return prodSum + monthlyTotal;
+                    });
+                    var annualElectricityConsumption = _.reduce(systemElectricityConsumption.total, function(consSum, monthlyTotal){
+                      return consSum + monthlyTotal;
+                    });
 
                     callback({
                         heatingConsumption: pivot({
@@ -125,8 +132,8 @@ define([
                             space: valuesFor(profiles.SystemSpaceHeatingEnergyBalance)
                         }),
                         electricityBalance: valuesFor(profiles.SystemElectricityBalance),
-                        systemCost: profiles.SystemCost.getSystemCost(system, profiles.Constants, 
-                                                                      systemElectricityProduction, systemElectricityConsumption)
+                        systemCost: profiles.SystemCost.getSystemCost(system, 
+                          annualElectricityProduction, annualElectricityConsumption)
                     });
                     return;
                 } else {
