@@ -96,7 +96,7 @@ define([
                     slide: function (event, ui){
                       var value = ui.value;
                       self.model.set('photovoltaicArea', value);
-                      self.setSliderMaxValues($(this));
+                      self.setSliderMaxValues(self.$(this));
                     }
                   });
 
@@ -106,7 +106,7 @@ define([
                     slide: function (event, ui){
                       var value = ui.value;
                       self.model.set('thermalArea', value);
-                      self.setSliderMaxValues($(this));
+                      self.setSliderMaxValues(self.$(this));
                     }
                   });
                 }
@@ -123,7 +123,7 @@ define([
                                              converter: function(direction, value, attr, model, els){
                                                var slider = self.$( "#thermalAreaSlider" );
                                                slider.slider( "value", value );
-                                               self.setSliderMaxValues(slider)
+                                               self.setSliderMaxValues(slider);
                                                return value;
                                              }};
                     return bindings;
@@ -133,16 +133,17 @@ define([
                 this.modelBinder.unbind();
             },
             setSliderMaxValues: function(activeSlider) {
-                var sliders = this.$('#photovoltaicAreaSlider, #thermalAreaSlider'),
+                var self = this,
+                    sliders = this.$('#photovoltaicAreaSlider, #thermalAreaSlider'),
                     otherSliders = sliders.not(activeSlider),
 
                     roofArea = this.model.get('roofArea'),
 
-                    usedRoofArea = _.reduce(sliders, function(memo, slider) { return memo + $(slider).slider('value') }, 0),
+                    usedRoofArea = _.reduce(sliders, function(memo, slider) { return memo + self.$(slider).slider('value'); }, 0),
                     remainingRoofArea = roofArea - usedRoofArea;
 
                 _.each(otherSliders, function(otherSlider) {
-                    otherSlider = $(otherSlider);
+                    otherSlider = self.$(otherSlider);
                     var otherSliderMaxValue = otherSlider.slider('value') + remainingRoofArea;
                     otherSlider.slider('option', 'max', otherSliderMaxValue);
                     otherSlider.siblings('.max-value').text(Number(otherSliderMaxValue).toPrecision(4));
