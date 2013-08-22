@@ -51,9 +51,12 @@ a:hover, a:active, a:focus {
 /* Layout */
 
 div.navbar {
-    position: relative;
-    width: 100%;
+    position: fixed;
     z-index: 1000;
+    top: 0;
+    left: 0;
+    right: 0;
+    box-shadow: 0 4px 6px #AAAAAA;
 }
 
 .navbar-inner {
@@ -75,7 +78,11 @@ div.navbar {
     min-height: 100%;
     background-color: #FFF;
     overflow: hidden;
-    box-shadow: -7px 0 8px #AAAAAA, 7px 0 8px #AAAAAA;
+    padding-top: 0;
+    padding-right: 2em;
+    padding-left: 2em;
+    padding-bottom: 2em;
+    margin-top: 4.7em; /* height of navbar */
 }
 
 .footer {
@@ -94,17 +101,20 @@ div.navbar {
 
 /* panels */
 
+.map-panel {
+    margin-top: 2em;
+}
+
 .panel.right {
     float: right;
     margin-bottom: 0px; /* 0 if there is no footer */
-    width: 560px;
+    width: 40em;
     background-color: #F0F0F0;
+    padding: 1em;
 }
 
 .panel.left {
-    margin-right: 580px;
-    padding-right: 4px;
-    padding-left: 4px;
+    margin-right: 44em;
     width: auto;
 }
 
@@ -154,9 +164,9 @@ div.navbar {
 
 .map-container {
     position: relative;
-    top: -110px;
+    top: -9em;
     width: 100%;
-    margin-bottom: -100px;
+    margin-bottom: -8em;
 }
 
 /* form */
@@ -167,7 +177,6 @@ div.navbar {
 }
 
 .controlform-frame {
-    margin-top: 5px;
     padding-bottom: 0;
     margin-bottom: 20px; /* mikko */
     width: auto;
@@ -538,7 +547,7 @@ form.search span.searchbox {
 .controls {
     position: absolute;
     left: 70px;
-    top: 80px;
+    top: 95px;
     margin: 10px;
     width: auto;
     height: 30px;
