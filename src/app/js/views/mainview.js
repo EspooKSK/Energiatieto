@@ -62,7 +62,7 @@ define([
             template: tmpl
         },
         regions: {
-            rightpanel  : '.panel.right',
+            rightpanel  : '.map-panel',
             navigation  : '.navigation',
             form        : '.control-form',
             charts      : '.chart-area',

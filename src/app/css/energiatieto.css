@@ -94,23 +94,18 @@ div.navbar {
 
 /* panels */
 
-.panel.left {
-    position: absolute;
-    top: 4.6em;
-    bottom: 0;
+.panel.right {
+    float: right;
     margin-bottom: 0px; /* 0 if there is no footer */
     width: 560px;
     background-color: #F0F0F0;
-    box-shadow: 3px 0px 5px #E0E0E0
 }
 
-.panel.right {
+.panel.left {
+    margin-right: 580px;
     padding-right: 4px;
     padding-left: 4px;
     width: auto;
-    min-width: 392px;
-    margin-left: 560px;
-    position: relative;
 }
 
 .infoarea {
@@ -161,6 +156,7 @@ div.navbar {
     position: relative;
     top: -110px;
     width: 100%;
+    margin-bottom: -100px;
 }
 
 /* form */
@@ -236,8 +232,6 @@ div.navbar {
 }
 
 .control-form {
-    position: relative;
-    top: -110px;
     width: 100%;
 }
 
@@ -249,8 +243,6 @@ div.navbar {
  .helptext, .indent {
     height: 40px;
     margin: 5px;
-    /* position: relative; */
-    /* z-index: 1; */
  }
 
  .control-form .delete {
