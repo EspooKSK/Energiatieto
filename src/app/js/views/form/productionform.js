@@ -146,7 +146,7 @@ define([
                     otherSlider = self.$(otherSlider);
                     var otherSliderMaxValue = otherSlider.slider('value') + remainingRoofArea;
                     otherSlider.slider('option', 'max', otherSliderMaxValue);
-                    otherSlider.siblings('.max-value').text(Number(otherSliderMaxValue).toPrecision(4));
+                    otherSlider.siblings('.max-value').text(Number(otherSliderMaxValue).toFixed(2));
                 });
             }
         });

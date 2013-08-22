@@ -51,9 +51,12 @@ a:hover, a:active, a:focus {
 /* Layout */
 
 div.navbar {
-    position: relative;
-    width: 100%;
+    position: fixed;
     z-index: 1000;
+    top: 0;
+    left: 0;
+    right: 0;
+    box-shadow: 0 4px 6px #AAAAAA;
 }
 
 .navbar-inner {
@@ -75,7 +78,11 @@ div.navbar {
     min-height: 100%;
     background-color: #FFF;
     overflow: hidden;
-    box-shadow: -7px 0 8px #AAAAAA, 7px 0 8px #AAAAAA;
+    padding-top: 0;
+    padding-right: 2em;
+    padding-left: 2em;
+    padding-bottom: 2em;
+    margin-top: 4.7em; /* height of navbar */
 }
 
 .footer {
@@ -94,23 +101,21 @@ div.navbar {
 
 /* panels */
 
-.panel.left {
-    position: absolute;
-    top: 4.6em;
-    bottom: 0;
-    margin-bottom: 0px; /* 0 if there is no footer */
-    width: 560px;
-    background-color: #F0F0F0;
-    box-shadow: 3px 0px 5px #E0E0E0
+.map-panel {
+    margin-top: 2em;
 }
 
 .panel.right {
-    padding-right: 4px;
-    padding-left: 4px;
+    float: right;
+    margin-bottom: 0px; /* 0 if there is no footer */
+    width: 40em;
+    background-color: #F0F0F0;
+    padding: 1em;
+}
+
+.panel.left {
+    margin-right: 44em;
     width: auto;
-    min-width: 392px;
-    margin-left: 560px;
-    position: relative;
 }
 
 .infoarea {
@@ -159,8 +164,9 @@ div.navbar {
 
 .map-container {
     position: relative;
-    top: -110px;
+    top: -9em;
     width: 100%;
+    margin-bottom: -8em;
 }
 
 /* form */
@@ -171,7 +177,6 @@ div.navbar {
 }
 
 .controlform-frame {
-    margin-top: 5px;
     padding-bottom: 0;
     margin-bottom: 20px; /* mikko */
     width: auto;
@@ -236,8 +241,6 @@ div.navbar {
 }
 
 .control-form {
-    position: relative;
-    top: -110px;
     width: 100%;
 }
 
@@ -249,8 +252,6 @@ div.navbar {
  .helptext, .indent {
     height: 40px;
     margin: 5px;
-    /* position: relative; */
-    /* z-index: 1; */
  }
 
  .control-form .delete {
@@ -546,7 +547,7 @@ form.search span.searchbox {
 .controls {
     position: absolute;
     left: 70px;
-    top: 80px;
+    top: 95px;
     margin: 10px;
     width: auto;
     height: 30px;

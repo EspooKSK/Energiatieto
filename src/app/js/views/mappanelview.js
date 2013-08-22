@@ -1,6 +1,6 @@
 define([
     "backbone.marionette",
-    "hbs!./rightpanelview.tmpl",
+    "hbs!./mappanelview.tmpl",
     "./map/mapview",
     ], function(Marionette, tmpl, MapView) {
         return Marionette.ItemView.extend({
