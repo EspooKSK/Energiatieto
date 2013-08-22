@@ -19,7 +19,10 @@ define([
                 this.chart.redraw(this.getChartData());
             },
             getChartData: function() {
-              return this.model.get('data').systemCost.totalSystemCost;
+              console.log(this.model.get('data'));
+              var systemCost = this.model.get('data').systemCost.totalSystemCost;
+              var comparisonCost = this.model.get('data').systemCost.comparisonCost;
+              return [systemCost, comparisonCost];
             }
         });
 });

@@ -524,6 +524,14 @@ form.search span.searchbox {
     text-decoration: none;
 }
 
+
+
+
+
+
+
+
+
 .google-map {
     width: 100%;
     height: 600px;
@@ -553,6 +561,9 @@ form.search span.searchbox {
     z-index: 2;
 }
 
+
+/* System cost chart */
+
 .system-cost {
     margin: 10px;
 }
@@ -566,8 +577,15 @@ form.search span.searchbox {
 
 .line {
   fill: none;
-  stroke: rgb(31, 119, 180);
-  stroke-width: 1.5px;
+  stroke-width: 2px;
+}
+
+.line0 {
+  stroke: #00d108;
+}
+
+.line1 {
+  stroke: #017ddf;
 }
 
 .system-cost-chart-title {
@@ -596,4 +614,33 @@ form.search span.searchbox {
     font-size: 1.2em;
     display: inline;
     margin-right: 5px;
+}
+
+.system-cost-chart-legend {
+    text-align: center;
+    margin-top: 10px;
+    border-style: solid;
+    border-width: 1px;
+    width: auto;
+    border-color: #757575;
+    margin-left: auto;
+    margin-right: auto;
+    width: 350px;
+    padding: 5px;
+}
+
+.cost-legend {
+    display: inline;
+}
+
+.cost-legend-symbol {
+    color: #00d108;
+}
+
+.comparison-legend {
+    display: inline;
+}
+
+.comparison-legend-symbol {
+    color: #017ddf;
 }

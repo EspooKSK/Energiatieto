@@ -4,23 +4,53 @@ var SystemCost = require(basedir + 'SystemCost'),
     assert     = require('assert');
   
 describe('SystemCost', function() {
+    beforeEach(function() {
+      SystemCost.constants = SystemCost.getConstants();
+    });
+  
+    it('should return a valid output given valid inputs', function(){
+      SystemCost.constants = {
+        nominalInterest: 0.05,
+        inflation: 0.03,
+        energyEscalation: 0.01,
+        energyCost: 0,
+        solarEnergySquareMeterPrice: 300,
+        solarHeatSquareMeterPrice: 500,
+        geoHeatKilowattPrice: 2000,
+        energySellPrice: 0.04,
+        energyBuyPrice: 0.12,
+        yearlyMaintenanceCostPercentage: 0.05,
+        systemLifespanInYears: 20,
+        estimatedYearOfFailure: 10,
+        estimatedAnnualCostPercentageForFailure: 0.02
+      };
+      
+      var system = {};
+      var annualElectricityProduction = 0;
+      var annualElectricityConsumption = 0;
+      
+      var systemCost = SystemCost.getSystemCost(system, annualElectricityProduction, annualElectricityConsumption);
+      assert(systemCost.initialInvestment === 0);
+      assert(systemCost.totalSystemCost[0].cost === 0);
+      assert(systemCost.comparisonCost[0].cost === 0);
+    });
 
     describe('getEnergyIncome', function(){
       it('should calculate income from sell price if balance is positive', function(){
-        var sellPrice = 2;
-        var buyPrice = 10;
+        SystemCost.constants.energySellPrice = 2;
+        SystemCost.constants.energyBuyPrice = 10;
         var energyBalance = 10;
         var ane = 1;
-        var result = SystemCost.getEnergyIncome(sellPrice, buyPrice, energyBalance, ane);
+        var result = SystemCost.getEnergyIncome(energyBalance, ane);
         assert(result === 20);
       });
 
       it('should calculate income from buy price if balance is negative', function(){
-        var sellPrice = 2;
-        var buyPrice = 10;
+        SystemCost.constants.energySellPrice = 2;
+        SystemCost.constants.energyBuyPrice = 10;
         var energyBalance = -10;
         var ane = 1;
-        var result = SystemCost.getEnergyIncome(sellPrice, buyPrice, energyBalance, ane);
+        var result = SystemCost.getEnergyIncome(energyBalance, ane);
         assert(result === -100);
       });
     });

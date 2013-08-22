@@ -19,19 +19,19 @@ define([
     
     var cost;
     
-    this.redraw = function(data) {
-      this.draw(data);
+    this.redraw = function(dataSets) {
+      this.draw(dataSets);
     };
 
-    this.draw = function(data) {
-      var x = drawXAxis(data);
-      var y = drawYAxis(data);
-      drawLine(data, x, y);
+    this.draw = function(dataSets) {
+      var x = drawXAxis(dataSets);
+      var y = drawYAxis(dataSets);
+      drawLine(dataSets, x, y);
       
       return this;
     };
 
-    function drawXAxis(data){
+    function drawXAxis(dataSets){
       var x = d3.scale.linear()
             .range([0, width]);
 
@@ -39,16 +39,16 @@ define([
             .scale(x)
             .orient("bottom")
             .tickFormat(d3.format(".0f"));
-
-      x.domain(d3.extent(data, function(d) { 
+      
+      x.domain(d3.extent(dataSets[0], function(d) { 
         return d.year;
       }));
 
       var axis = chart.selectAll('g.x.axis')
-        .data([width])
-        .attr("class", "x axis")
-        .attr("transform", "translate(0, " + height + ")")
-        .call(xAxis);
+            .data([width])
+            .attr("class", "x axis")
+            .attr("transform", "translate(0, " + height + ")")
+            .call(xAxis);
 
       axis.enter()
         .append("g")
@@ -61,20 +61,21 @@ define([
       return x;
     }
     
-    function drawYAxis(data){
+    function drawYAxis(dataSets){
       var y = d3.scale.linear()
             .range([height, 0]);
 
       var yAxis = d3.svg.axis()
             .scale(y)
             .orient("left");
-
-      y.domain([0, d3.max(data, function(d) { return d.cost; })]);
+      
+      var yMax = getDataSetsMaxCost(dataSets);
+      y.domain([0, yMax]);
 
       var axis = chart.selectAll('g.y.axis')
-        .data([height])
-        .attr("class", "y axis")
-        .call(yAxis);
+            .data([height])
+            .attr("class", "y axis")
+            .call(yAxis);
 
 
       axis.enter()
@@ -86,24 +87,34 @@ define([
       
       return y;
     }
+    
+    function getDataSetsMaxCost(dataSets){
+      return _.reduce(dataSets, function(max, dataSet){
+        var dataSetMax = d3.max(dataSet, function(d) { return d.cost; });
+        if(max){
+          return d3.max([max, dataSetMax]);
+        } else {
+          return dataSetMax;
+        }
+      }, null);
+    }
 
-    function drawLine(data, x, y){
-      if(!cost){
-        cost = chart.append("g")
-          .attr("class", "cost");
-      }
+    function drawLine(dataSets, x, y){
+      chart.selectAll("g.cost").remove();
 
       var line = d3.svg.line()
             .interpolate("basis")
             .x(function(d) { return x(d.year); })
             .y(function(d) { return y(d.cost); });
 
-      cost.selectAll("path").remove();
-
-      cost.append("path")
-        .attr("class", "line")
-        .attr("d", function(d) { return line(data); });
+      cost = chart.selectAll("g.cost")
+        .data(dataSets)
+        .enter()
+        .append("g")
+        .attr("class", "cost")
+        .append("path")
+        .attr("class", function(data, index){ return "line line" + index; })
+        .attr("d", function(data) { return line(data); });
     }
-
   };
 });
