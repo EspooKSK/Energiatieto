@@ -18,7 +18,7 @@ define([
         "./welcomeview",
         "./controlformcollectionview",
         "./navigationview",
-        "./rightpanelview",
+        "./mappanelview",
 
         "text!./helptexts/buildinginfo.txt",
         "text!./helptexts/production.txt"
@@ -43,7 +43,7 @@ define([
         WelcomeView,
         ControlFormCollectionView,
         NavigationView,
-        RightPanelView,
+        MapPanelView,
 
         BuildingHelpText,
         ProductionHelpText
@@ -62,7 +62,7 @@ define([
             template: tmpl
         },
         regions: {
-            rightpanel  : '.map-panel',
+            mappanel    : '.map-panel',
             navigation  : '.navigation',
             form        : '.control-form',
             charts      : '.chart-area',
@@ -85,7 +85,7 @@ define([
             this.producers.attachTo(this.model, "producers");
             this.buildings.attachTo(this.model, "buildings");
           
-            this.rightPanelView = new RightPanelView();
+            this.mapPanelView = new MapPanelView();
             this.navigationView = new NavigationView()
               .on('showConsumption', self.showConsumption)
               .on('showSolarProduction', self.showSolarProduction)
@@ -128,7 +128,7 @@ define([
             this.form.show(this.producersFormCollectionView);
         },
         onShow: function() {
-            this.rightpanel.show(this.rightPanelView);
+            this.mappanel.show(this.mapPanelView);
             this.navigation.show(this.navigationView);
             this.map.show(this.mapView);
             this.charts.show(this.ChartArea);
