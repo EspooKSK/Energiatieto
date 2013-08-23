@@ -39,9 +39,7 @@ define([
                 }
             },
             events: {
-                "click .delete": "destroyModel",
-                "click .toggle-show-details-btn": "toggleBackgroundData",
-                "click .accordion-toggle": "toggleAccordionItem"
+                "click .delete": "destroyModel"
             },
             modelEvents: {
                 "change": "modelChanged",
@@ -50,13 +48,6 @@ define([
             },
             destroyModel: function() {
                 this.model.destroy();
-            },
-            toggleAccordionItem: function() {
-                this.$('.accordion-toggle > i').toggleClass('icon-chevron-down').toggleClass('icon-chevron-up');
-            },
-            toggleBackgroundData: function() {
-                this.$('.toggle-show-details-icon').toggleClass('icon-chevron-down').toggleClass('icon-chevron-up');
-                this.$('.background-details').slideToggle();
             },
             // re-renders the form if element bound to changed property has class ".re-render"
             modelChanged: function(model, event) {
