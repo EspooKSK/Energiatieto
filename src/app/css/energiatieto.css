@@ -248,6 +248,11 @@ div.navbar {
     width: 40%;
 }
 
+.consumption-list-header,
+.producer-list-header {
+    margin-top: 1em;
+}
+
 .control-form {
     width: 100%;
 }
