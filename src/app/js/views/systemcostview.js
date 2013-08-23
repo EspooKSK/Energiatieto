@@ -30,9 +30,9 @@ define([
             },
           displayPaybackTime: function() {
             var paybackTime = this.model.get('data').systemCost.paybackTime;
-            if(paybackTime){
-              this.$('#payback-time').text(systemCost.paybackTime);
-              if(systemCost.paybackTime === 1){
+            if(paybackTime !== null && paybackTime !== undefined){
+              this.$('#payback-time').text(paybackTime);
+              if(paybackTime === 1){
                 this.$('.years').text("vuosi");
               } else {
                 this.$('.years').text("vuotta");
