@@ -42,7 +42,6 @@ define(["underscore"], function(_){
     };
     
     this.getTotalSystemCost = function(annualElectricityProduction, annualElectricityConsumption, r, initialInvestment){
-      var additionalInvestment = this.getAdditionalInvestment(initialInvestment, r);
       var maintenanceCost = this.getMaintenanceCost(initialInvestment);
       var annualEnergyBalance = annualElectricityProduction - annualElectricityConsumption;
 
@@ -53,17 +52,17 @@ define(["underscore"], function(_){
       return _.map(years, function(year) {
         return {
           year: currentYear + year,
-          cost: this.getSystemCostForYear(year, r, 
+          cost: this.getSystemCostForYear(year, r, re,
                                           initialInvestment, maintenanceCost, 
-                                          re, additionalInvestment,
                                           annualEnergyBalance)
         };
       });
     };
 
-    this.getSystemCostForYear = function(year, r, 
+    this.getSystemCostForYear = function(year, r, re,
                                          initialInvestment, maintenanceCost, 
-                                         re, additionalInvestment, energyBalance){
+                                         energyBalance){
+      var additionalInvestment = this.getAdditionalInvestment(year, initialInvestment, r);
       var energyCost = self.constants.energyCost;
 
       var ay = this.getSingleOutput(r, year);
@@ -74,7 +73,7 @@ define(["underscore"], function(_){
       var systemCost = initialInvestment +
             maintenanceCost * an +
             energyCost * ane +
-            additionalInvestment * ay -
+            additionalInvestment -
             incomeForYear;
       return systemCost;
     };
@@ -93,12 +92,16 @@ define(["underscore"], function(_){
       return solarEnergyAreaCost + solarHeatAreaCost;
     };
 
-    this.getAdditionalInvestment = function(initialInvestment, r){
-      var outputOnYearOfFailure = getSingleOutput(r, self.constants.estimatedYearOfFailure);
-      var additionalInvestment = outputOnYearOfFailure * 
-        self.constants.estimatedAnnualCostPercentageForFailure *
-        initialInvestment;
-      return additionalInvestment;
+    this.getAdditionalInvestment = function(year, initialInvestment, r){
+      if(year >= self.constants.estimatedYearOfFailure){
+        var outputOnYearOfFailure = getSingleOutput(r, self.constants.estimatedYearOfFailure);
+        var additionalInvestment = outputOnYearOfFailure * 
+              self.constants.estimatedAnnualCostPercentageForFailure *
+              initialInvestment;
+        return additionalInvestment;
+      } else {
+        return 0;
+      }
     };
     
     this.getMaintenanceCost = function(initialInvestment){

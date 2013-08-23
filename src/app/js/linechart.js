@@ -103,7 +103,7 @@ define([
       chart.selectAll("g.cost").remove();
 
       var line = d3.svg.line()
-            .interpolate("basis")
+            .interpolate("linear")
             .x(function(d) { return x(d.year); })
             .y(function(d) { return y(d.cost); });
 
