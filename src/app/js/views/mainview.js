@@ -64,7 +64,8 @@ define([
         regions: {
             mappanel    : '.map-panel',
             navigation  : '.navigation',
-            form        : '.control-form',
+            consumptionform : '.consumption-control-form',
+            producerform : '.producer-control-form',
             charts      : '.chart-area',
             map         : '.map-container',
             helptext    : '.helptext',
@@ -108,24 +109,17 @@ define([
             this.producersFormCollectionView = new ControlFormCollectionView({ collection: EnergyProducers, itemView: ProductionForm });
         },
         showConsumption: function(){
-            this.showBuildingInfoForm();
             this.mapView.showOnlyBuildingLayer();
         },
         showSolarProduction: function(){
-            this.showProductionForm();
             this.mapView.showSolarEnergy();
         },
         showGeoProduction: function(){
-            this.showProductionForm();
             this.mapView.showGeoEnergy();
         },
-        showBuildingInfoForm: function() {
-            HelpText.trigger("change", BuildingHelpText);
-            this.form.show(this.buildingsFormCollectionView);
-        },
-        showProductionForm: function() {
-            HelpText.trigger("change", ProductionHelpText);
-            this.form.show(this.producersFormCollectionView);
+        showControlForms: function() {
+            this.consumptionform.show(this.buildingsFormCollectionView);
+            this.producerform.show(this.producersFormCollectionView);
         },
         onShow: function() {
             this.mappanel.show(this.mapPanelView);
@@ -135,7 +129,7 @@ define([
             this.helptext.show(new HelpTextView({
                 model: new Backbone.Model()
             }));
-            this.showBuildingInfoForm();
+            this.showControlForms();
             
             this.producers.fetch();
             this.buildings.fetch();
