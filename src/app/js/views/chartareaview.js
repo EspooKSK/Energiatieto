@@ -223,9 +223,8 @@ define([
                     sumFn = sumFunction || self.nestedSums,
                     sum = sumFn(dataSets);
 
-                if ('' + sum) {
-                    self.$(sumElement).text("");
-                }
+                var sumText = ('' + sum) ? (sum + " kWh") : "";
+                self.$(sumElement).text(sumText);
             };
         },
         nestedSums: function(dataSets) {
