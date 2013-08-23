@@ -1,8 +1,11 @@
 <div class="{{#if isSelected}}selected {{/if}}controlform-frame accordion-group">
 
     <div class='controlform-frame-header accordion-heading'>
-        <span class='icon-round-x delete'></span>
-        <h5 class="accordion-toggle" data-toggle="collapse" data-parent="#controlFormAccordion" href="#{{id}}">{{typeName}}</h5>
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="controlFormAccordion" href="#{{id}}">
+            <i class="icon-chevron-{{#if isSelected}}up{{else}}down{{/if}}"></i>
+            <span class='icon-round-x delete'></span>
+            <h5>{{typeName}}</h5>
+        </a>
     </div>
 
     {{#if typeIsSolar}}

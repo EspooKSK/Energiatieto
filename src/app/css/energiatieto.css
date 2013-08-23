@@ -178,20 +178,28 @@ div.navbar {
 
 .controlform-frame {
     padding-bottom: 0;
-    margin-bottom: 20px; /* mikko */
+    margin-bottom: 1em;
     width: auto;
     border-width: 1px;
     border-style: solid;
     border-color: #d9d9d9;
 }
 
+.accordion-heading a {
+    text-decoration: none;
+}
+
 .controlform-frame-header {
     background-color: #d9d9d9;
-    height: 25px;
+    height: 3.5em;
     width: auto;
-    padding-top: 0.4em;
-    padding-left: 1em;
 }
+
+.controlform-frame-header h5 {
+    display: inline-block;
+    margin: 0;
+}
+
 .controlform-frame-content {
     padding-top: 0;
 }
@@ -261,7 +269,7 @@ div.navbar {
 }
 
 .control-form .accordion-toggle {
-    padding: 0;
+    padding: 1em;
 }
 
 .form-horizontal .et-data-control-label {   /* mikko */

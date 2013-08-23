@@ -1,8 +1,11 @@
 <div class="{{#if isSelected}}selected {{/if}}controlform-frame accordion-group">
 
     <div class='controlform-frame-header accordion-heading'>
-        <span class='icon-round-x delete'></span>
-        <h5 name='buildingName' class="accordion-toggle" data-toggle="collapse" data-parent="#controlFormAccordion" href="#{{id}}">&lt;nimetön kiinteistö&gt;</h5>
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="controlFormAccordion" href="#{{id}}">
+            <i class="icon-chevron-{{#if isSelected}}up{{else}}down{{/if}}"></i>
+            <span class='icon-round-x delete'></span>
+            <h5>Kiinteistö: <span name="buildingName"></span></h5>
+        </a>
     </div>
 
     <div class="controlform-frame-content form-horizontal accordion-body collapse {{#if isSelected}}in{{/if}}" id="{{id}}">

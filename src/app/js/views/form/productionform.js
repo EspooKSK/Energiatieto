@@ -40,7 +40,8 @@ define([
             },
             events: {
                 "click .delete": "destroyModel",
-                "click .toggle-show-details-btn": "toggleBackgroundData"
+                "click .toggle-show-details-btn": "toggleBackgroundData",
+                "click .accordion-toggle": "toggleAccordionItem"
             },
             modelEvents: {
                 "change": "modelChanged",
@@ -49,6 +50,9 @@ define([
             },
             destroyModel: function() {
                 this.model.destroy();
+            },
+            toggleAccordionItem: function() {
+                this.$('.accordion-toggle > i').toggleClass('icon-chevron-down').toggleClass('icon-chevron-up');
             },
             toggleBackgroundData: function() {
                 this.$('.toggle-show-details-icon').toggleClass('icon-chevron-down').toggleClass('icon-chevron-up');
