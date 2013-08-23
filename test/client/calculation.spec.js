@@ -33,6 +33,7 @@ describe('SystemCost', function() {
       assert(systemCost.initialInvestment === 0);
       assert(systemCost.totalSystemCost[0].cost === 0);
       assert(systemCost.comparisonCost[0].cost === 0);
+      assert(systemCost.paybackTime === null);
     });
 
     describe('getEnergyIncome', function(){
@@ -64,11 +65,51 @@ describe('SystemCost', function() {
       });
     });
 
-    describe('getAnnualEnergyBalance', function(){
-      it('should return the total energy balance (production - consumption)', function(){
-        var monthlyProduction =  [1, 1, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0];
-        var monthlyConsumption = [1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0];
-        assert(SystemCost.getAnnualEnergyBalance(monthlyProduction, monthlyConsumption) === 1);
+    describe('getPaybackTime', function(){
+      it('should return the number of years until comparison cost exceeds total cost', function(){
+        var totalSystemCost = [
+          {year: 2013, cost: 15},
+          {year: 2014, cost: 16},
+          {year: 2015, cost: 17},
+          {year: 2016, cost: 18},
+          {year: 2017, cost: 19},
+          {year: 2018, cost: 20},
+        ];
+        var comparisonCost = [
+          {year: 2013, cost: 0},
+          {year: 2014, cost: 5},
+          {year: 2015, cost: 10},
+          {year: 2016, cost: 15},
+          {year: 2017, cost: 20},
+          {year: 2018, cost: 25},
+        ];
+        
+        var paybackTime = SystemCost.getPaybackTime(totalSystemCost, comparisonCost);
+        
+        assert(paybackTime === 4);
+      });
+
+      it('should return null if the comparison cost never exceeds the system cost', function(){
+        var totalSystemCost = [
+          {year: 2013, cost: 21},
+          {year: 2014, cost: 22},
+          {year: 2015, cost: 23},
+          {year: 2016, cost: 24},
+          {year: 2017, cost: 25},
+          {year: 2018, cost: 26},
+        ];
+        var comparisonCost = [
+          {year: 2013, cost: 0},
+          {year: 2014, cost: 5},
+          {year: 2015, cost: 10},
+          {year: 2016, cost: 15},
+          {year: 2017, cost: 20},
+          {year: 2018, cost: 25},
+        ];
+        
+        var paybackTime = SystemCost.getPaybackTime(totalSystemCost, comparisonCost);
+        
+        assert(paybackTime === null);
       });
     });
 });

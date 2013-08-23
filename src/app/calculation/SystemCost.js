@@ -27,17 +27,18 @@ define(["underscore"], function(_){
     self.constants = this.getConstants();
 
     this.getSystemCost = function(system, annualElectricityProduction, annualElectricityConsumption){
-      console.log(arguments);
       var r = this.getRealInterest();
       var solarInstallations = system.solarInstallation;
       var initialInvestment = this.getInitialInvestment(solarInstallations);
       var totalSystemCost = this.getTotalSystemCost(annualElectricityProduction, annualElectricityConsumption,
         r, initialInvestment);
       var comparisonCost = this.getComparisonCost(annualElectricityProduction, r);
+      var paybackTime = this.getPaybackTime(totalSystemCost, comparisonCost);
 
       return {totalSystemCost: totalSystemCost,
               comparisonCost: comparisonCost,
-              initialInvestment: initialInvestment};
+              initialInvestment: initialInvestment,
+              paybackTime: paybackTime};
     };
     
     this.getTotalSystemCost = function(annualElectricityProduction, annualElectricityConsumption, r, initialInvestment){
@@ -156,6 +157,17 @@ define(["underscore"], function(_){
     function getCurrentYear(){
       return new Date().getFullYear();
     }
+    
+    this.getPaybackTime = function(totalSystemCost, comparisonCost){
+      var paybackElem = _.find(totalSystemCost, function(elem, index){
+        return elem.cost < comparisonCost[index].cost;
+      });
+
+      if(!paybackElem) return null;
+
+      var paybackTime = paybackElem.year - totalSystemCost[0].year;
+      return paybackTime;
+    };
     
     return this;
   })();

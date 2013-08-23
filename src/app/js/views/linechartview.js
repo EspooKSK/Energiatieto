@@ -19,7 +19,6 @@ define([
                 this.chart.redraw(this.getChartData());
             },
             getChartData: function() {
-              console.log(this.model.get('data'));
               var systemCost = this.model.get('data').systemCost.totalSystemCost;
               var comparisonCost = this.model.get('data').systemCost.comparisonCost;
               return [systemCost, comparisonCost];

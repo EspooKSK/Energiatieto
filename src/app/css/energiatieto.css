@@ -599,24 +599,6 @@ form.search span.searchbox {
     text-align: center;
 }
 
-.system-cost-initial-investment {
-    text-align: center;
-}
-
-.euro {
-    font-size: 1.5em;
-}
-
-.initial-investment {
-    font-size: 2.1em;
-}
-
-.initial-investment-label {
-    font-size: 1.2em;
-    display: inline;
-    margin-right: 5px;
-}
-
 .system-cost-chart-legend {
     text-align: center;
     margin-top: 10px;
@@ -645,3 +627,48 @@ form.search span.searchbox {
 .comparison-legend-symbol {
     color: #017ddf;
 }
+
+/* System cost info */
+
+.system-cost-info {
+    text-align: center;
+}
+
+.system-cost-initial-investment {
+    text-align: center;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.euro {
+    font-size: 1.5em;
+}
+
+.initial-investment {
+    font-size: 2.1em;
+}
+
+.initial-investment-label {
+    font-size: 1.2em;
+    margin-right: 5px;
+}
+
+.system-cost-payback-time {
+    text-align: center;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.years {
+    font-size: 1.5em;
+}
+
+.payback-time {
+    font-size: 2.1em;
+}
+
+.payback-time-label {
+    font-size: 1.2em;
+    margin-right: 5px;
+}
+

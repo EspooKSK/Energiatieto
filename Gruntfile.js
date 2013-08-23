@@ -57,6 +57,7 @@ module.exports = function(grunt) {
             // MOCHA
             "describe",
             "it",
+            "beforeEach",
             // PHANTOMJS
             "document"
           ]
