@@ -33,7 +33,7 @@ describe('SystemCost', function() {
       assert(systemCost.initialInvestment === 0);
       assert(systemCost.totalSystemCost[0].cost === 0);
       assert(systemCost.comparisonCost[0].cost === 0);
-      assert(systemCost.paybackTime === null);
+      assert(systemCost.paybackTime === 0);
     });
 
     describe('getEnergyIncome', function(){
@@ -89,7 +89,7 @@ describe('SystemCost', function() {
         assert(paybackTime === 4);
       });
 
-      it('should return null if the comparison cost never exceeds the system cost', function(){
+      it('should return null if the comparison cost never equals or exceeds the system cost', function(){
         var totalSystemCost = [
           {year: 2013, cost: 21},
           {year: 2014, cost: 22},
@@ -110,6 +110,21 @@ describe('SystemCost', function() {
         var paybackTime = SystemCost.getPaybackTime(totalSystemCost, comparisonCost);
         
         assert(paybackTime === null);
+      });
+
+      it('should return 0 years if the costs are equal at start', function(){
+        var totalSystemCost = [
+          {year: 2013, cost: 15},
+          {year: 2018, cost: 20}
+        ];
+        var comparisonCost = [
+          {year: 2013, cost: 15},
+          {year: 2014, cost: 20}
+        ];
+        
+        var paybackTime = SystemCost.getPaybackTime(totalSystemCost, comparisonCost);
+        
+        assert(paybackTime === 0);
       });
     });
 });

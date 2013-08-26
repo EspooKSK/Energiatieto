@@ -34,11 +34,12 @@ define(["underscore"], function(_){
         r, initialInvestment);
       var comparisonCost = this.getComparisonCost(annualElectricityConsumption, r);
       var paybackTime = this.getPaybackTime(totalSystemCost, comparisonCost);
-
-      return {totalSystemCost: totalSystemCost,
-              comparisonCost: comparisonCost,
-              initialInvestment: initialInvestment,
-              paybackTime: paybackTime};
+      
+      var systemCost = {totalSystemCost: totalSystemCost,
+                        comparisonCost: comparisonCost,
+                        initialInvestment: initialInvestment,
+                        paybackTime: paybackTime};
+      return systemCost;
     };
     
     this.getTotalSystemCost = function(annualElectricityProduction, annualElectricityConsumption, r, initialInvestment){
@@ -70,11 +71,15 @@ define(["underscore"], function(_){
       var ane = this.getRecurringEscalationOutput(re, year);
       var incomeForYear = this.getEnergyIncome(energyBalance, ane);
       
+      var adjustedMaintenanceCost = maintenanceCost * an;
+      var adjustedEnergyCost = energyCost * ane;
+      
       var systemCost = initialInvestment +
-            maintenanceCost * an +
-            energyCost * ane +
-            additionalInvestment -
-            incomeForYear;
+            adjustedMaintenanceCost +
+            adjustedEnergyCost +
+             additionalInvestment + 
+            -incomeForYear;
+      
       return systemCost;
     };
     
@@ -149,13 +154,16 @@ define(["underscore"], function(_){
     };
     
     this.getComparisonCost = function(annualElectricityConsumption, r){
+      var re = this.getRealInterestWithEscalation(r);
+
       var currentYear = getCurrentYear();
       var years = _.range(self.constants.systemLifespanInYears + 1);
       var comparisonCost = _.map(years, function(year) {
-        var energyCostAdjustment = getRecurringOutput(r, year);
+        var energyCostAdjustment = this.getRecurringEscalationOutput(re, year);
+        var energyCostForYear = annualElectricityConsumption * self.constants.energyBuyPrice * energyCostAdjustment;
 
         return {year: currentYear + year,
-                cost: annualElectricityConsumption * self.constants.energyBuyPrice * energyCostAdjustment};
+                cost: energyCostForYear};
       });
       return comparisonCost;
     };
@@ -165,8 +173,8 @@ define(["underscore"], function(_){
     }
     
     this.getPaybackTime = function(totalSystemCost, comparisonCost){
-      var paybackElem = _.find(totalSystemCost, function(elem, index){
-        return elem.cost < comparisonCost[index].cost;
+      var paybackElem = _.find(totalSystemCost, function(totalYearCost, index){
+        return totalYearCost.cost <= comparisonCost[index].cost;
       });
 
       if(!paybackElem) return null;
