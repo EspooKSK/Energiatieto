@@ -32,7 +32,7 @@ define(["underscore"], function(_){
       var initialInvestment = this.getInitialInvestment(solarInstallations);
       var totalSystemCost = this.getTotalSystemCost(annualElectricityProduction, annualElectricityConsumption,
         r, initialInvestment);
-      var comparisonCost = this.getComparisonCost(annualElectricityProduction, r);
+      var comparisonCost = this.getComparisonCost(annualElectricityConsumption, r);
       var paybackTime = this.getPaybackTime(totalSystemCost, comparisonCost);
 
       return {totalSystemCost: totalSystemCost,
@@ -137,12 +137,15 @@ define(["underscore"], function(_){
     this.getEnergyIncome = function(energyBalance, ane){
       var energyBuyPrice = self.constants.energyBuyPrice;
       var energySellPrice = self.constants.energySellPrice;
+      var income;
 
       if(energyBalance > 0){
-        return energySellPrice * energyBalance * ane;
+        income = energySellPrice * energyBalance * ane;
       } else {
-        return energyBuyPrice * energyBalance * ane;
+        income = energyBuyPrice * energyBalance * ane;
       }
+      
+      return income;
     };
     
     this.getComparisonCost = function(annualElectricityConsumption, r){
