@@ -45,7 +45,7 @@ define([
             systemCost: {
                 totalSystemCost: [],
                 comparisonCost: [],
-                initialInvestment: null,
+                initialInvestment: 0,
                 paybackTime: null
             }
         };
