@@ -13,7 +13,9 @@ define([
                 };
             },
             onItemRemoved: function(itemView) {
-                if(itemView) itemView.off("delete");
+                if(itemView){
+                  itemView.off("delete");
+                }
             },
             appendHtml: function(collectionView, itemView, index) {
                 collectionView.$el.prepend(itemView.el);
