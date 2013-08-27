@@ -21,6 +21,7 @@ define([
             },
             onShow: function() {
                 this.lineChart.show(this.lineChartView);
+                this.modelChanged();
             },
             modelChanged: function() {
                 var systemCost = this.model.get('data').systemCost;
