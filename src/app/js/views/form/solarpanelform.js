@@ -1,12 +1,10 @@
 define([
     "backbone.marionette",
-    "hbs!./productionform.tmpl",
+    "hbs!./solarpanelform.tmpl",
     "backbone.modelbinder",
-    "../../helpers/helptextvent",
-    "text!../helptexts/production.txt",
     "jquery-ui",
-    "../../models/energyproducers"
-    ], function(Marionette, tmpl, ModelBinder, HelpTextVent, HelpText, jqueryUi, EnergyProducers) {
+    "../../models/solarpanelproducers"
+    ], function(Marionette, tmpl, ModelBinder, jqueryUi, SolarPanelProducers) {
 
         return Marionette.ItemView.extend({
             template: {
@@ -14,18 +12,8 @@ define([
                 type: "handlebars"
             },
             templateHelpers: {
-                typeName: function() {
-                    if (this.type === "solarpanel") {
-                        return ("Aurinkokeräin : " + this.solarInstallationName);
-                    } else {
-                        return ("Lämpökaivo : " + this.boreholeName);
-                    }
-                },
-                typeIsSolar: function() {
-                  return ( this.type === 'solarpanel' );
-                },
-                typeIsGeothermal: function() {
-                  return ( this.type === 'geothermal' );
+                typeName: function(){
+                  return ("Aurinkokeräin : " + this.solarInstallationName);
                 },
                 showSolarInstallationDataIsTrue: function() {
                     return ( this.showSolarInstallationData === true );
@@ -34,12 +22,14 @@ define([
                     return Number(this.roofArea);
                 },
                 isSelected: function() {
-                    var selectedObj = EnergyProducers.getSelected();
+                    var selectedObj = SolarPanelProducers.getSelected();
                     return selectedObj && (this.id === selectedObj.id);
                 }
             },
             events: {
-                "click .delete": "destroyModel"
+                "click .delete": "destroyModel",
+                "click .toggle-show-details-btn": "toggleBackgroundData",
+                "click .accordion-toggle": "toggleAccordionItem"
             },
             modelEvents: {
                 "change": "modelChanged",
@@ -48,6 +38,14 @@ define([
             },
             destroyModel: function() {
                 this.model.destroy();
+                this.close();
+            },
+            toggleAccordionItem: function() {
+                this.$('.accordion-toggle > i').toggleClass('icon-chevron-down').toggleClass('icon-chevron-up');
+            },
+            toggleBackgroundData: function() {
+                this.$('.toggle-show-details-icon').toggleClass('icon-chevron-down').toggleClass('icon-chevron-up');
+                this.$('.background-details').slideToggle();
             },
             // re-renders the form if element bound to changed property has class ".re-render"
             modelChanged: function(model, event) {
@@ -65,18 +63,13 @@ define([
                 _.bindAll(this);
                 this.modelBinder = new ModelBinder();
             },
-            onShow: function() {
-                HelpTextVent.trigger("change", HelpText);
-            },
             onRender: function() {
                 var self = this;
               
                 var bindings = ModelBinder.createDefaultBindings(self.el, 'name');
 
-                if(self.model.get('type') === 'solarpanel'){
-                  initializeAreaSliders();
-                  addSliderBindings(bindings);
-                }
+                initializeAreaSliders();
+                addSliderBindings(bindings);
 
                 this.modelBinder.bind(this.model, this.el, bindings);
 

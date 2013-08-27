@@ -15,13 +15,15 @@ define([
         SolarPanel,
         GeoThermalWell) {
 
-        return function(map, collection, buildingLayer) {
+        return function(map, solarPanelCollection, geothermalWellCollection, buildingLayer) {
             var self = this;
 
             var geoEnergyOverlay = new GeoEnergyMapType(map);
 
             this.controls = new SolarMapControls();
             this.markerStore = new MarkerStore();
+
+            _.bindAll(this);
 
             this.controls.on("deactivate", function() {
                 google.maps.event.removeListener(self.listener);
@@ -33,27 +35,32 @@ define([
                 self.onclick.apply(self, arguments);
             };
 
-            this.activate = function() {
-                collection.on("reset", self.initMarkers);
+            this.activateSolar = function() {
+                solarPanelCollection.on("reset", self.initSolarMarkers);
+                solarPanelCollection.on("add", self.addMarker);
+
                 self.markerStore.associateWith(map);
-                collection.on("add", self.addMarker);
 
-                this.initMarkers();
+                this.initSolarMarkers();
             };
 
-            this.deactivate = function() {
-                google.maps.event.removeListener(self.listener);
-                buildingLayer.setOptions({
-                    clickable: true
-                });
-                self.markerStore.disassociate();
-                collection.off("reset", self.initMarkers);
-                collection.off("add", self.addMarker);
-            };
-
-            this.initMarkers = function() {
+            this.initSolarMarkers = function() {
                 self.markerStore.clear();
-                collection.each(self.addMarker);
+                solarPanelCollection.each(self.addMarker);
+            };
+
+            this.activateGeo = function() {
+                geothermalWellCollection.on("reset", self.initGeoMarkers);
+                geothermalWellCollection.on("add", self.addMarker);
+
+                self.markerStore.associateWith(map);
+
+                this.initGeoMarkers();
+            };
+
+            this.initGeoMarkers = function() {
+                self.markerStore.clear();
+                geothermalWellCollection.each(self.addMarker);
             };
 
             this.addMarker = function(producer) {
@@ -65,7 +72,12 @@ define([
                 });
 
                 marker.onclick(function() {
-                    collection.trigger("select", producer);
+                    if(producer.get('type') === 'solarpanel'){
+                      solarPanelCollection.trigger("select", producer);
+                    }
+                    if(producer.get('type') === 'geothermal'){
+                      geothermalWellCollection.trigger("select", producer);
+                    }
                 });
 
                 producer.on("deselect", marker.deactivate);
@@ -78,14 +90,14 @@ define([
             };
 
             this.addSolarPanel = function(event) {
-                var loc = event.latLng,
-                    panel = new SolarPanel({
-                            averageRadiation: event.row.AvActKWHm2.value,
-                            loc: {
-                                lat: loc.lat(),
-                                lng: loc.lng()
-                            }
-                        });
+                var loc = event.latLng;
+                var panel = new SolarPanel({
+                  averageRadiation: event.row.AvActKWHm2.value,
+                  loc: {
+                    lat: loc.lat(),
+                    lng: loc.lng()
+                  }
+                });
 
                 _.each(_.keys(panel.defaults), function(key) {
                     var capKey = key.charAt(0).toUpperCase() + key.substring(1);
@@ -94,14 +106,14 @@ define([
                     }
                 });
                 
-                collection.add(panel);
-                collection.trigger("select", panel);
+                solarPanelCollection.add(panel);
+                solarPanelCollection.trigger("select", panel);
             };
 
             this.selectSolarEnergy = function() {
                 self.replaceOverlay(new SolarMapType(map));
 
-                self.activate();
+                self.activateSolar();
                 self.onclick = self.addSolarPanel;
                 self.controls.off("activate");
                 self.controls.on("activate", function() {
@@ -134,8 +146,8 @@ define([
                             });
                         }
 
-                    collection.add(well);
-                    collection.trigger("select", well);
+                    geothermalWellCollection.add(well);
+                    geothermalWellCollection.trigger("select", well);
                 });
             };
 
@@ -145,7 +157,7 @@ define([
                 buildingLayer.setOptions({
                     clickable: false
                 });
-                self.activate();
+                self.activateGeo();
                 self.onclick = self.addGeoThermalWell;
                 self.controls.off("activate");
                 self.controls.on("activate", function() {
@@ -154,6 +166,16 @@ define([
                 self.controls.setText("Lämpökaivo");
             };
 
-            _.bindAll(this);
+            this.deactivate = function() {
+                google.maps.event.removeListener(self.listener);
+                buildingLayer.setOptions({
+                    clickable: true
+                });
+                self.markerStore.disassociate();
+                solarPanelCollection.off("reset", self.initSolarMarkers);
+                solarPanelCollection.off("add", self.addMarker);
+                geothermalWellCollection.off("reset", self.initSolarMarkers);
+                geothermalWellCollection.off("add", self.addMarker);
+            };
         };
 });

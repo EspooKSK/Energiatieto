@@ -1,0 +1,175 @@
+<div class="{{#if isSelected}}selected {{/if}}controlform-frame accordion-group">
+
+    <div class='controlform-frame-header accordion-heading'>
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="controlFormAccordion" href="#{{id}}">
+            <i class="icon-chevron-{{#if isSelected}}up{{else}}down{{/if}}"></i>
+            <span class='icon-round-x delete'></span>
+            <h5>{{typeName}}</h5>
+        </a>
+    </div>
+
+    <div class="controlform-frame-content form-horizontal accordion-body collapse {{#if isSelected}}in{{/if}}" id="{{id}}">
+
+        <div class='control-group'>
+            <label class='et-control-label'>Nimi</label>
+            <div class='et-controls'>
+                <input type='text' class='input-medium re-render' name='boreholeName'>
+            </div>
+        </div>
+
+
+        <div class='control-group'>
+            <label class='et-control-label'>Kaivon aktiivisyvyys</label>
+            <div class='et-controls'>
+                <input type='text' class='et-input-micro' name='activeDepth'><span class="et-unit">m</span>
+            </div>
+        </div>
+
+        <div class='control-group'>
+            <label class='et-control-label'>Tehomitoitus</label>
+            <div class='et-controls'>
+                <input type='text' class='et-input-micro' name='powerDimensioning'><span class="et-unit">%</span>
+            </div>
+        </div>
+
+        <div class='control-group'>
+            <label class='et-control-label'>Käyttöveden lämmitys</label>
+            <div class='et-controls'>
+                <input type='checkbox' class='input-medium' name='usedForHotWaterHeating' disabled>
+            </div>
+        </div>
+
+        <div class='control-group'>
+            <label class='et-control-label'>Lisälämmitys sähköllä</label>
+            <div class='et-controls'>
+                <input type='checkbox' class='input-medium' name='electricityAssisted' disabled>
+            </div>
+        </div>
+
+        <div class='controlform-divider'>Peruskallion tiedot kaivon kohdalla</div>
+
+        <div class='control-group'>
+            <label class='et-control-label'>Kallion kivilaji</label>
+            <div class='et-controls'>
+                <input type='text' class='input-medium' name='bedrockType' disabled et-view>
+            </div>   
+        </div>
+
+        <div class='controlform-divider'></div>
+
+        <div class='control-group'>
+                <button type='button' class='et-control-button btn toggle-show-details-btn'><i class='toggle-show-details-icon icon-chevron-down'></i> Laskennassa käytetyt tiedot</button>
+        </div>
+
+        <div class='background-details'>
+            <div class="et-info">
+                <p>
+                    Kallioperän kivilajitiedot saadaan Geologian tutkimuskeskuksen kartta-aineistosta.
+                </p>
+            </div>
+            <div class="et-info">
+                <p>
+                    Lämpökaivon energiantuotto arvioidaan kivilajikohtaisten lämmönjohtolukujen perusteella käyttäen Luulajan teknillisen yliopiston professori Bo Nordellin esittelemää laskentatapaa. Energiantuoton laskennassa ei huomioida mahdollista pohjaveden virtausta kaivossa, jonka vaikutuksesta kaivon suorituskyky voi olla arvioitua parempi.
+                </p>
+            </div>
+            <div class="et-info">
+                <p>
+                    Kalliolämpöjärjestelmän toiminta arvioidaan Lämpöpumppujen energialaskentaoppaan 2012 mukaisesti. Tunnittaisina ulkoilman lämpötiloina käytetään Vantaan vertailuvuoden säätietoja.
+                </p>
+            </div>
+            <div class="et-info">
+                <p>
+                    Tarkat kuvaukset laskentatavoista sekä käytetyt lähtötiedot löytyvät <a href="https://github.com/ahlstrom/EnergiatietoCalculation" target="_blank">täältä.</a>
+                </p>
+            </div>
+            <br>
+            <div class='control-group'>
+                <label class='et-data-control-label'>Kalliolämpöjärjestelmän tiedot</label>
+            </div>
+
+            <div class="data-divider"></div>
+
+            <div class='control-group'>
+                <label class='et-data-control-label'>Kaivon halkaisija</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='diameter'><span class="et-unit">m</span>
+                </div>   
+            </div>
+
+            <div class='control-group'>
+                <label class='et-data-control-label'>Alin lämpötila kaivossa</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='wallTemp'><span class="et-unit">°C</span>
+                </div>   
+            </div>
+
+            <div class='control-group'>
+                <label class='et-data-control-label'>Lämmönkeruupiirin lämpötila</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='tGroundLoop'><span class="et-unit">°C</span>
+                </div>   
+            </div>
+
+
+            <div class='control-group'>
+                <label class='et-data-control-label'>Käyttöveden lämpötila</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='tOutHotWater'><span class="et-unit">°C</span>
+                </div>   
+            </div>
+
+            <div class='control-group'>
+                <label class='et-data-control-label'>Lämmityksen menoveden ylin lämpötila</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='tOutSpaceMax'><span class="et-unit">°C</span>
+                </div>   
+            </div>
+
+            <div class='control-group'>
+                <label class='et-data-control-label'>... ulkolämpötilassa</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='tOutSpaceMaxAt'><span class="et-unit">°C</span>
+                </div>   
+            </div>
+
+            <div class='control-group'>
+                <label class='et-data-control-label'>Lämmityksen menoveden alin lämpötila</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='tOutSpaceMin'><span class="et-unit">°C</span>
+                </div>   
+            </div>
+
+            <div class='control-group'>
+                <label class='et-data-control-label'>... ulkolämpötilassa</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='tOutSpaceMin'><span class="et-unit">°C</span>
+                </div>   
+            </div> 
+
+            <div class='control-group'>
+                <label class='et-data-control-label'>Lauhduttimen lämpötilaero</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='tDiffCondenser'><span class="et-unit">°C</span>
+                </div>   
+            </div>
+
+            <div class='control-group'>
+                <label class='et-data-control-label'>Höyrystimen lämpötilaero</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='tDiffEvaporator'><span class="et-unit">°C</span>
+                </div>   
+            </div>
+
+            <div class='control-group'>
+                <label class='et-data-control-label'>Häviökerroin</label>
+                <div class='et-data-controls'>
+                    <input type='text' class='et-input-micro' name='efficiencyFactor'>
+                </div>   
+            </div>                                                                                 
+
+        </div>
+
+    </div>
+
+</div>
+

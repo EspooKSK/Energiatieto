@@ -23,6 +23,14 @@ define([
             layer.eventlisteners = [];
             layer.markerStore = new MarkerStore();
 
+            google.maps.event.addListener(map, 'zoom_changed', function() {
+                layer.setOptions({
+                    clickable: (map.getZoom() >= clickableZoomLevel)
+                });
+            });
+
+            collection.on("add", addBuilding);
+            collection.on("reset", initMarkers);
 
             layer.setOpaque = function(val) {
                 if (val === true) {
@@ -36,6 +44,7 @@ define([
                 layer.setMap(map);
                 layer.setOpaque(false);
                 layer.markerStore.associateWith(map);
+                initMarkers();
             };
 
             layer.deactivate = function() {
@@ -45,17 +54,11 @@ define([
                 layer.deactivateClickHandlers();
             };
 
-            google.maps.event.addListener(map, 'zoom_changed', function() {
-                layer.setOptions({
-                    clickable: (map.getZoom() >= clickableZoomLevel)
-                });
-            });
-
-            var selectBuilding = function(building) {
+            function selectBuilding(building) {
                 collection.trigger("select", building);
-            };
+            }
 
-            var addBuilding = function(building, silent) {
+            function addBuilding(building, silent) {
                 var loc = building.get("location");
 
                 var marker = layer.markerStore.create({
@@ -72,21 +75,15 @@ define([
                     marker.activate();
                 }
 
-            };
+            }
 
-            var initMarkers = function() {
+            function initMarkers() {
                 layer.markerStore.clear();
 
                 collection.each(addBuilding);
-            };
+            }
 
-            collection.on("add", addBuilding);
-            collection.on("reset", initMarkers);
-
-
-            initMarkers();
-
-            var newBuilding = function(opts) {
+            function newBuilding(opts) {
                 var building = new Building({
                     byggid: opts.byggid,
                     averageRadiation: opts.averageRadiation,
@@ -95,7 +92,7 @@ define([
                 });
                 collection.add(building);
                 selectBuilding(building);
-            };
+            }
 
             layer.activateClickHandlers = function() {
                 var buildingCreateClickHandler = function(event) {
@@ -135,6 +132,7 @@ define([
                 layer.eventlisteners.push(google.maps.event.addListener(map, 'click', buildingCreateClickHandler));
                 layer.eventlisteners.push(google.maps.event.addListener(layer, 'click', buildingCreateClickHandler));
             };
+
             layer.deactivateClickHandlers = function() {
                 _.each(layer.eventlisteners, google.maps.event.removeListener);
                 layer.eventlisteners = [];

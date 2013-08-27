@@ -1,6 +1,6 @@
 define([
     "backbone.marionette",
-    "hbs!./navigationview.tmpl",
+    "hbs!./navigationview.tmpl"
     ], function(Marionette, tmpl, bootstrap) {
         return Marionette.ItemView.extend({
             template: {

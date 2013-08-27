@@ -3,10 +3,8 @@ define([
     "backbone.marionette", 
     "hbs!./buildinginfoform.tmpl",
     "backbone.modelbinder",
-    "../../helpers/helptextvent",
-    "text!../helptexts/buildinginfo.txt",
     "../../models/selectedbuildings"
-    ], function(_, Marionette, tmpl, ModelBinder, HelpTextVent, HelpText, Buildings) {
+    ], function(_, Marionette, tmpl, ModelBinder, Buildings) {
         var roundValueConverter = function(direction, value) {
             var result = Math.round(value);
             if (isNaN(result)) {
@@ -60,10 +58,20 @@ define([
                 "deselect": "render"
             },
             events: {
-                "click .delete": "destroyModel"
+                "click .delete": "destroyModel",
+                "click .toggle-show-details-btn": "toggleBackgroundData",
+                "click .accordion-toggle": "toggleAccordionItem"
             },
             destroyModel: function() {
                 this.model.destroy();
+                this.close();
+            },
+            toggleAccordionItem: function() {
+                this.$('.accordion-toggle > i').toggleClass('icon-chevron-down').toggleClass('icon-chevron-up');
+            },
+            toggleBackgroundData: function() {
+                this.$('.toggle-show-details-icon').toggleClass('icon-chevron-down').toggleClass('icon-chevron-up');
+                this.$('.background-details').slideToggle();
             },
             // re-renders the form if element bound to changed property has class ".re-render"
             modelChanged: function(model, event) {
@@ -80,9 +88,6 @@ define([
             initialize: function(options) {
                 _.bindAll(this);
                 this.modelBinder = new ModelBinder();
-            },
-            onShow: function() {
-                HelpTextVent.trigger("change", HelpText);
             },
             onRender: function() {
                 var bindings = ModelBinder.createDefaultBindings(this.el, 'name');

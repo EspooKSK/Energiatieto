@@ -81,8 +81,8 @@ define([
                 if (options.buildings && options.buildings.length > 0) {
                     var system = {
                         building: options.buildings,
-                        solarInstallation: findByType(options.producers, "solarpanel"),
-                        borehole: findByType(options.producers, "geothermal")
+                        solarInstallation: options.solarpanelproducers,
+                        borehole: options.geothermalwellproducers
                     };
 
                     var valuesFor = function(profile) {

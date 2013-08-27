@@ -4,24 +4,10 @@ define([
         "bootstrap",
         "hbs!./mainview.tmpl",
         "hbs!./clearconfirmation.tmpl",
-        "./form/buildinginfoform",
-        "./form/productionform",
-        "./form/purchasedform",
-        "../models/selectedbuildings",
-        "../models/energyproducers",
+
         "./chartareaview",
         "../models/chartareamodel",
-        "./helptext",
-        "./map/mapview",
-        "../models/mapposition",
-        "../helpers/helptextvent",
-        "./welcomeview",
-        "./controlformcollectionview",
-        "./navigationview",
-        "./mappanelview",
-
-        "text!./helptexts/buildinginfo.txt",
-        "text!./helptexts/production.txt"
+        "./rightpanelview",
     ], 
     function(
         Backbone,
@@ -29,31 +15,11 @@ define([
         bootstrap,
         tmpl,
         clearconfirmationtmpl,
-        BuildingInfoForm,
-        ProductionForm,
-        PurchasedForm,
-        SelectedBuildings,
-        EnergyProducers,
+
         ChartAreaView,
         ChartAreaModel,
-        HelpTextView,
-        MapView,
-        MapPosition,
-        HelpText,
-        WelcomeView,
-        ControlFormCollectionView,
-        NavigationView,
-        MapPanelView,
-
-        BuildingHelpText,
-        ProductionHelpText
+        RightPanelView
     ) {
-
-    var viewTypes = {
-        "building-info" : BuildingInfoForm,
-        "production"    : ProductionForm,
-        "purchased"     : PurchasedForm
-    };
 
     var MainView = Marionette.Layout.extend({
         className: 'master',
@@ -62,81 +28,26 @@ define([
             template: tmpl
         },
         regions: {
-            mappanel    : '.map-panel',
-            navigation  : '.navigation',
-            consumptionform : '.consumption-control-form',
-            producerform : '.producer-control-form',
-            charts      : '.chart-area',
-            map         : '.map-container',
-            helptext    : '.helptext',
-            welcome     : '.welcome-view'
-        },
-        events: {
-          "click #welcome-link": "displayWelcomeDialog",
-          "click .search-btn": "submitSearchForm"
+            rightpanel  : '.panel.right',
+            charts      : '.chart-area'
         },
         initialize: function(options) {
             _.bindAll(this);
             
             var self       = this,
-                buildings  = this.buildings  = SelectedBuildings,
-                chartModel = this.chartModel = new ChartAreaModel(options.model),
-                producers  = this.producers  = EnergyProducers;
-
-            this.producers.attachTo(this.model, "producers");
-            this.buildings.attachTo(this.model, "buildings");
-          
-            this.mapPanelView = new MapPanelView();
-            this.navigationView = new NavigationView()
-              .on('showConsumption', self.showConsumption)
-              .on('showSolarProduction', self.showSolarProduction)
-              .on('showGeoProduction', self.showGeoProduction);
-          
+                chartModel = this.chartModel = new ChartAreaModel(options.model);
 
             this.ChartArea = new ChartAreaView({
-                model: chartModel
+              model: chartModel
             });
 
-            this.mapView = new MapView({
-                buildings: buildings,
-                producers: producers,
-                model: new MapPosition({
-                    id: 'map-view-pos'
-                })
-            });
-
-            this.buildingsFormCollectionView = new ControlFormCollectionView({ collection: SelectedBuildings, itemView: BuildingInfoForm });
-            this.producersFormCollectionView = new ControlFormCollectionView({ collection: EnergyProducers, itemView: ProductionForm });
-        },
-        showConsumption: function(){
-            this.mapView.showOnlyBuildingLayer();
-        },
-        showSolarProduction: function(){
-            this.mapView.showSolarEnergy();
-        },
-        showGeoProduction: function(){
-            this.mapView.showGeoEnergy();
-        },
-        showControlForms: function() {
-            this.consumptionform.show(this.buildingsFormCollectionView);
-            this.producerform.show(this.producersFormCollectionView);
+            this.rightPanelView = new RightPanelView({model: this.model});
         },
         onShow: function() {
-            this.mappanel.show(this.mapPanelView);
-            this.navigation.show(this.navigationView);
-            this.map.show(this.mapView);
+            this.rightpanel.show(this.rightPanelView);
             this.charts.show(this.ChartArea);
-            this.helptext.show(new HelpTextView({
-                model: new Backbone.Model()
-            }));
-            this.showControlForms();
             
-            this.producers.fetch();
-            this.buildings.fetch();
             this.initClearConfirmationPopover();
-        },
-        displayWelcomeDialog: function() {
-            this.welcome.show(new WelcomeView());
         },
         initClearConfirmationPopover: function() {
             var self = this;
@@ -145,7 +56,8 @@ define([
                 placement: 'bottom',
                 title: 'Oletko varma?',
                 html: true,
-                content: clearconfirmationtmpl
+                content: clearconfirmationtmpl,
+                container: '.master'
             }).click(function() {
                 self.$('.popover-content #confirmClearAllMapObjectsButton').click(function() {
                     self.clearAllMapObjects();
@@ -157,14 +69,7 @@ define([
             });
         },
         clearAllMapObjects: function() {
-            EnergyProducers.reset();
-            SelectedBuildings.reset();
-            localStorage.clear();
-        },
-        submitSearchForm: function(event) {
-          var address = this.$("input[name=search]").val();
-          this.mapView.trigger("search", address);
-          return false;
+            this.rightPanelView.clearAllMapObjects();
         },
     });
     return MainView;

@@ -16,7 +16,7 @@ define([
                 this.chart = new LineChart(this.$("svg")[0]).draw(this.getChartData());
             },
             modelChanged: function() {
-                this.chart.redraw(this.getChartData());
+                if(this.chart) this.chart.redraw(this.getChartData());
             },
             getChartData: function() {
               var systemCost = this.model.get('data').systemCost.totalSystemCost;

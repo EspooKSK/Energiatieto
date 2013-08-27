@@ -38,26 +38,24 @@ define([
                     this.controls.show(layer.controls);
                 }
             },
-            showOnlyBuildingLayer: function() {
-                // this.$(".search").show();
+            showBuildings: function() {
+                this.clear();
                 this.activate(this.layers.building);
             },
             clear: function() {
                 this.controls.close();
-                this.map.overlayMapTypes.clear();
-                _.each(_.values(this.layers), function(it) {
-                    if (typeof it.deactivate === "function") {
-                        it.deactivate();
-                    }
+                    this.map.overlayMapTypes.clear();
+                    _.each(_.values(this.layers), function(it) {
+                        if (typeof it.deactivate === "function") {
+                            it.deactivate();
+                        }
                 });
             },
             showSolarEnergy: function() {
-                // this.$(".search").hide();
                 this.activate(this.layers.energy);
                 this.layers.energy.selectSolarEnergy();
             },
             showGeoEnergy: function() {
-                // this.$(".search").hide();
                 this.activate(this.layers.energy);
                 this.layers.energy.selectGeoEnergy();
             },
@@ -65,19 +63,8 @@ define([
                 _.bindAll(this);
                 var self = this;
                 this.buildings = options.buildings;
-                this.producers = options.producers;
-            },
-            newLayers: function() {
-                var buildingLayer = new BuildingLayer(this.map, this.buildings);
-                var energyLayer = new EnergyLayer(
-                            this.map, 
-                            this.producers, 
-                            buildingLayer);
-
-                return {
-                    building    : buildingLayer,
-                    energy      : energyLayer
-                };
+                this.solarpanelproducers = options.solarpanelproducers;
+                this.geothermalwellproducers = options.geothermalwellproducers;
             },
             createMap: function() {
                 var self = this;
@@ -131,11 +118,24 @@ define([
                     if (!self.googleCreated) {
                         self.createMap();
                         self.layers = self.newLayers();
-                        self.showOnlyBuildingLayer();
+                        self.showBuildings();
                         self.googleCreated = true;
                     }
                     self.$(".map").append(self.map.getDiv());
                 });
+            },
+            newLayers: function() {
+                var buildingLayer = new BuildingLayer(this.map, this.buildings);
+                var energyLayer = new EnergyLayer(
+                            this.map, 
+                            this.solarpanelproducers, 
+                            this.geothermalwellproducers, 
+                            buildingLayer);
+
+                return {
+                    building    : buildingLayer,
+                    energy      : energyLayer
+                };
             },
             onHide: function() {
                 this.$(".map").children().detach();
