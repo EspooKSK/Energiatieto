@@ -22,6 +22,7 @@
     "grunt-requirejs": "~0.3.5",
     "phantom": "~0.5.2",
     "grunt": "0.4.1",
-    "grunt-contrib-jshint": "~0.6.2"
+    "grunt-contrib-jshint": "~0.6.2",
+    "chai": "~1.7.2"
   }
 }

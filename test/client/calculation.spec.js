@@ -1,14 +1,16 @@
 var basedir = '../../src/app/calculation/';
 
 var SystemCost = require(basedir + 'SystemCost'),
-    assert     = require('assert');
+    assert     = require('assert'),
+    _          = require('underscore'),
+    should       = require('chai').should();
   
 describe('SystemCost', function() {
     beforeEach(function() {
       SystemCost.constants = SystemCost.getConstants();
     });
   
-    it('should return a valid output given valid inputs', function(){
+    it('should return a valid output given valid empty inputs', function(){
       SystemCost.constants = {
         nominalInterest: 0.05,
         inflation: 0.03,
@@ -24,16 +26,67 @@ describe('SystemCost', function() {
         estimatedYearOfFailure: 10,
         estimatedAnnualCostPercentageForFailure: 0.02
       };
-      
+
       var system = {};
       var annualElectricityProduction = 0;
       var annualElectricityConsumption = 0;
-      
+
       var systemCost = SystemCost.getSystemCost(system, annualElectricityProduction, annualElectricityConsumption);
-      assert(systemCost.initialInvestment === 0);
-      assert(systemCost.totalSystemCost[0].cost === 0);
-      assert(systemCost.comparisonCost[0].cost === 0);
-      assert(systemCost.paybackTime === 0);
+      systemCost.initialInvestment.should.equal(0);
+      systemCost.totalSystemCost[0].cost.should.equal(0);
+      systemCost.comparisonCost[0].cost.should.equal(0);
+      systemCost.paybackTime.should.equal(0);
+    });
+
+    describe('getSystemCost should return correct', function(){
+        var testConstants = {
+          nominalInterest: 0.05,
+          inflation: 0.03,
+          energyEscalation: 0.01,
+          energyCost: 0,
+          solarEnergySquareMeterPrice: 300,
+          solarHeatSquareMeterPrice: 500,
+          geoHeatKilowattPrice: 2000,
+          energySellPrice: 0.04,
+          energyBuyPrice: 0.12,
+          yearlyMaintenanceCostPercentage: 0.05,
+          systemLifespanInYears: 20,
+          estimatedYearOfFailure: 10,
+          estimatedAnnualCostPercentageForFailure: 0.02
+        };
+        var system = {
+          solarInstallation: [{photovoltaicArea: 200, thermalArea: 30}]
+        };
+        var annualElectricityProduction = 17460;
+        var annualElectricityConsumption = 22592;
+      
+        it('initial investment', function(){
+          SystemCost.constants = _.clone(testConstants, true);
+
+          var systemCost = SystemCost.getSystemCost(system, annualElectricityProduction, annualElectricityConsumption);
+          systemCost.initialInvestment.should.equal(75000);
+        });
+      
+        it('total system cost', function(){
+          SystemCost.constants = _.clone(testConstants, true);
+
+          var systemCost = SystemCost.getSystemCost(system, annualElectricityProduction, annualElectricityConsumption);
+          Math.round(systemCost.totalSystemCost[0].cost).should.equal(79366);
+        });
+      
+        it('comparison cost', function(){
+          SystemCost.constants = _.clone(testConstants, true);
+
+          var systemCost = SystemCost.getSystemCost(system, annualElectricityProduction, annualElectricityConsumption);
+          Math.round(systemCost.comparisonCost[0].cost).should.equal(2711);
+        });
+      
+        it('payback time', function(){
+          SystemCost.constants = _.clone(testConstants, true);
+
+          var systemCost = SystemCost.getSystemCost(system, annualElectricityProduction, annualElectricityConsumption);
+          should.not.exist(systemCost.paybackTime);
+        });
     });
 
     describe('getEnergyIncome', function(){
@@ -43,7 +96,7 @@ describe('SystemCost', function() {
         var energyBalance = 10;
         var ane = 1;
         var result = SystemCost.getEnergyIncome(energyBalance, ane);
-        assert(result === 20);
+        result.should.equal(20);
       });
 
       it('should calculate income from buy price if balance is negative', function(){
@@ -52,7 +105,7 @@ describe('SystemCost', function() {
         var energyBalance = -10;
         var ane = 1;
         var result = SystemCost.getEnergyIncome(energyBalance, ane);
-        assert(result === -100);
+        result.should.equal(-100);
       });
     });
 
@@ -61,7 +114,8 @@ describe('SystemCost', function() {
         var realInterest = 0.02;
         var escalation = 0.01;
         var result = SystemCost.getRealInterestWithEscalation(realInterest, escalation);
-        assert(Math.round(result * 100) / 100 === 0.01);
+        var roundedResult = Math.round(result * 100) / 100;
+        roundedResult.should.equal(0.01);
       });
     });
 
@@ -86,7 +140,7 @@ describe('SystemCost', function() {
         
         var paybackTime = SystemCost.getPaybackTime(totalSystemCost, comparisonCost);
         
-        assert(paybackTime === 4);
+        paybackTime.should.equal(4);
       });
 
       it('should return null if the comparison cost never equals or exceeds the system cost', function(){
@@ -109,7 +163,7 @@ describe('SystemCost', function() {
         
         var paybackTime = SystemCost.getPaybackTime(totalSystemCost, comparisonCost);
         
-        assert(paybackTime === null);
+        should.not.exist(paybackTime);
       });
 
       it('should return 0 years if the costs are equal at start', function(){
@@ -124,7 +178,7 @@ describe('SystemCost', function() {
         
         var paybackTime = SystemCost.getPaybackTime(totalSystemCost, comparisonCost);
         
-        assert(paybackTime === 0);
+        paybackTime.should.equal(0);
       });
     });
 });
