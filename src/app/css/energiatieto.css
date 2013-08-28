@@ -675,3 +675,8 @@ form.search span.searchbox {
     margin-right: 5px;
 }
 
+.license {
+    margin-top: 5px;
+    text-align: center;
+    font-size: 0.8em;
+}
