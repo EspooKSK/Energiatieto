@@ -122,7 +122,7 @@ define([
                 buildingLayer.setOptions({
                     clickable: true
                 });
-                self.controls.setText("Aurinkokeräin");
+                self.controls.setSolar();
             };
 
             this.replaceOverlay = function(overlayType) {
@@ -163,7 +163,7 @@ define([
                 self.controls.on("activate", function() {
                     self.listener = google.maps.event.addListener(map, 'click', self.clickHandler);
                 });
-                self.controls.setText("Lämpökaivo");
+                self.controls.setGeo();
             };
 
             this.deactivate = function() {

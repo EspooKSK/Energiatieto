@@ -489,6 +489,11 @@ form.search span.searchbox {
     width: 19px;
 }
 
+.add-btn-icon {
+    margin-top: -5px;
+    margin-right: 10px;
+}
+
 /* SVG graphs */
 
 .chart g.total, .chart g.space {
@@ -675,8 +680,12 @@ form.search span.searchbox {
     margin-right: 5px;
 }
 
+
+
 .license {
     margin-top: 5px;
     text-align: center;
     font-size: 0.8em;
 }
+
+

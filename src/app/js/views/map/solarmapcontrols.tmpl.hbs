@@ -1,1 +1,5 @@
-<span class="btn">Lisää <span class="text"></span></span>
+{{#if isSolar }}
+<span class="btn"><img class="add-btn-icon" src="/images/mapMarkerAGlyph.png"></img>Lisää aurinkokeräin</span>
+{{else}}
+<span class="btn"><img class="add-btn-icon" src="/images/mapMarkerKGlyph.png"></img>Lisää lämpökaivo</span>
+{{/if}}

@@ -17,6 +17,9 @@ define([
                     this.trigger("activate");
                 }
             },
+            initialize: function() {
+                this.isSolar = true;
+            },
             onShow: function() {
                 this.delegateEvents();
             },
@@ -24,8 +27,18 @@ define([
                 template: tmpl,
                 type: 'handlebars'
             },
-            setText: function(text) {
-                this.$(".text").text(text);
+            setSolar: function() {
+                this.isSolar = true;
+                this.render();
+            },
+            setGeo: function() {
+                this.isSolar = false;
+                this.render();
+            },
+            serializeData: function(){
+                return {
+                  isSolar: this.isSolar
+                };
             }
         });
 });
