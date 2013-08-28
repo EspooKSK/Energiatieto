@@ -93,8 +93,9 @@ define(["underscore"], function(_){
         return solarAreaSum + solarInstallation.thermalArea;
       }, 0);
       var solarHeatAreaCost = solarHeatArea * self.constants.solarHeatSquareMeterPrice;
-
-      return solarEnergyAreaCost + solarHeatAreaCost;
+      
+      var initialInvestment = solarEnergyAreaCost + solarHeatAreaCost;
+      return initialInvestment;
     };
 
     this.getAdditionalInvestment = function(year, initialInvestment, r){
@@ -123,13 +124,19 @@ define(["underscore"], function(_){
       return 1 / Math.pow(1 + r, year);
     };
     
-    this.getRecurringOutput = function(r, numYears){
+    this.getRecurringOutput = function(r, n){
+      if(n === 0){
+        return 1;
+      }
       var i = self.constants.nominalInterest;
-      return ((Math.pow(1 + r, numYears) - 1) / 
-              (i * Math.pow(1 + r, numYears)));
+      return ((Math.pow(1 + r, n) - 1) / 
+              (i * Math.pow(1 + r, n)));
     };
     
     this.getRecurringEscalationOutput = function(re, n){
+      if(n === 0){
+        return 1;
+      }
       return ((Math.pow(1 + re, n) - 1) / 
               (re * Math.pow(1 + re, n)));
     };
