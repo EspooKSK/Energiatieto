@@ -161,6 +161,7 @@ div.navbar {
 
 .map-container {
     width: 100%;
+    margin-bottom: -25px;
 }
 
 /* form */
@@ -172,8 +173,8 @@ div.navbar {
 
 .controlform-frame {
     margin-top: 5px;
+    margin-bottom: 10px;
     padding-bottom: 0;
-    margin-bottom: 1em;
     width: auto;
     border-width: 1px;
     border-style: solid;
@@ -186,7 +187,7 @@ div.navbar {
 
 .controlform-frame-header {
     background-color: #d9d9d9;
-    height: 3.5em;
+    height: 3.0em;
     width: auto;
 }
 
@@ -254,12 +255,12 @@ div.navbar {
 
  .control-form .delete {
     float: right;
-    margin-right: 0.5em;
+    margin-right: 0em;
     cursor: pointer;
 }
 
 .control-form .accordion-toggle {
-    padding: 1em;
+    padding: 0.75em;
 }
 
 .form-horizontal .et-data-control-label {   /* mikko */
