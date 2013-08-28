@@ -44,8 +44,11 @@ define([
             this.rightPanelView = new RightPanelView({model: this.model});
         },
         onShow: function() {
-            this.rightpanel.show(this.rightPanelView);
+            // must be before rightpanel is displayed
+            // or chart energy sums won't show initially
             this.charts.show(this.ChartArea);
+
+            this.rightpanel.show(this.rightPanelView);
             
             this.initClearConfirmationPopover();
         },
