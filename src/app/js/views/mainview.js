@@ -4,6 +4,8 @@ define([
         "bootstrap",
         "hbs!./mainview.tmpl",
         "hbs!./clearconfirmation.tmpl",
+        "hbs!./instructionview.tmpl",
+        "../models/selectedbuildings",
 
         "./chartareaview",
         "../models/chartareamodel",
@@ -15,11 +17,20 @@ define([
         bootstrap,
         tmpl,
         clearconfirmationtmpl,
+        instructionviewtmpl,
+        selectedBuildings,
 
         ChartAreaView,
         ChartAreaModel,
         RightPanelView
     ) {
+
+    var InstructionsView = Marionette.ItemView.extend({
+        template: {
+            type: 'handlebars',
+            template: instructionviewtmpl
+        }
+    });
 
     var MainView = Marionette.Layout.extend({
         className: 'master',
@@ -29,7 +40,7 @@ define([
         },
         regions: {
             rightpanel  : '.panel.right',
-            charts      : '.chart-area'
+            leftpanel   : '.chart-area'
         },
         initialize: function(options) {
             _.bindAll(this);
@@ -41,12 +52,22 @@ define([
               model: chartModel
             });
 
+            this.instructionView = new InstructionsView();
+            selectedBuildings.on('add', function() {
+                self.leftpanel.show(self.ChartArea);
+            });
+
             this.rightPanelView = new RightPanelView({model: this.model});
         },
         onShow: function() {
             // must be before rightpanel is displayed
             // or chart energy sums won't show initially
-            this.charts.show(this.ChartArea);
+            selectedBuildings.fetch();
+            if (_.size(selectedBuildings) > 0) {
+                this.leftpanel.show(this.ChartArea);
+            } else {
+                this.leftpanel.show(this.instructionView);
+            }
 
             this.rightpanel.show(this.rightPanelView);
             
