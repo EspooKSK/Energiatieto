@@ -63,16 +63,16 @@ define(["underscore"], function(_){
     this.getSystemCostForYear = function(year, r, re,
                                          initialInvestment, maintenanceCost, 
                                          energyBalance){
-      var additionalInvestment = this.getAdditionalInvestment(year, initialInvestment, r);
-      var energyCost = self.constants.energyCost;
-
       var ay = this.getSingleOutput(r, year);
       var an = this.getRecurringOutput(r, year);
       var ane = this.getRecurringEscalationOutput(re, year);
-      var incomeForYear = this.getEnergyIncome(energyBalance, ane);
-      
+
+      var energyCost = self.constants.energyCost;
+
       var adjustedMaintenanceCost = maintenanceCost * an;
       var adjustedEnergyCost = energyCost * ane;
+      var additionalInvestment = this.getAdditionalInvestment(year, initialInvestment, r);
+      var incomeForYear = this.getEnergyIncome(energyBalance, ane);
       
       var systemCost = initialInvestment +
             adjustedMaintenanceCost +
@@ -125,18 +125,12 @@ define(["underscore"], function(_){
     };
     
     this.getRecurringOutput = function(r, n){
-      if(n === 0){
-        return 1;
-      }
       var i = self.constants.nominalInterest;
       return ((Math.pow(1 + r, n) - 1) / 
               (i * Math.pow(1 + r, n)));
     };
     
     this.getRecurringEscalationOutput = function(re, n){
-      if(n === 0){
-        return 1;
-      }
       return ((Math.pow(1 + re, n) - 1) / 
               (re * Math.pow(1 + re, n)));
     };

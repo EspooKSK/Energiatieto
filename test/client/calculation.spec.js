@@ -38,7 +38,7 @@ describe('SystemCost', function() {
       systemCost.paybackTime.should.equal(0);
     });
 
-    describe('getSystemCost should return correct', function(){
+    describe('getSystemCost should return a correct', function(){
         var testConstants = {
           nominalInterest: 0.05,
           inflation: 0.03,
@@ -71,14 +71,26 @@ describe('SystemCost', function() {
           SystemCost.constants = _.clone(testConstants, true);
 
           var systemCost = SystemCost.getSystemCost(system, annualElectricityProduction, annualElectricityConsumption);
-          Math.round(systemCost.totalSystemCost[0].cost).should.equal(79366);
+
+          // without energy income/costs
+          // Math.round(systemCost.totalSystemCost[0].cost).should.equal(75000);
+          // Math.round(systemCost.totalSystemCost[1].cost).should.equal(76429);
+          // Math.round(systemCost.totalSystemCost[20].cost).should.equal(100185);
+
+          // with energy income/costs
+          Math.round(systemCost.totalSystemCost[0].cost).should.equal(75000);
+          Math.round(systemCost.totalSystemCost[1].cost).should.equal(77039);
+          Math.round(systemCost.totalSystemCost[20].cost).should.equal(111374);
         });
       
         it('comparison cost', function(){
           SystemCost.constants = _.clone(testConstants, true);
 
           var systemCost = SystemCost.getSystemCost(system, annualElectricityProduction, annualElectricityConsumption);
-          Math.round(systemCost.comparisonCost[0].cost).should.equal(2711);
+
+          Math.round(systemCost.comparisonCost[0].cost).should.equal(0);
+          Math.round(systemCost.comparisonCost[1].cost).should.equal(2686);
+          Math.round(systemCost.comparisonCost[20].cost).should.equal(49257);
         });
       
         it('payback time', function(){
