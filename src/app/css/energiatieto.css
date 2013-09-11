@@ -59,9 +59,16 @@ div.navbar {
 .navbar-inner {
     border-radius: 0px;
     -webkit-border-radius: 0px;
-    height: 3em;
-    padding-top: 1.6em;
+    height: 4.5em;
     padding-left: 1.6em;
+}
+
+.nav.links {
+    padding-top: 1em;
+}
+
+.nav.links li {
+    margin-left: 0.5em;
 }
 
 .master { /* Centers the lay-out and takes the height of the window */
@@ -383,6 +390,8 @@ span.brand-header {
     font-size: 3em;
     font-weight: normal;
     text-rendering: optimizelegibility;
+    display: inline-block;
+    padding-top: 0.5em;
 }
 
 a.header-link {
@@ -497,6 +506,45 @@ form.search span.searchbox {
 .control-form label:after {
     content: ":";
     margin-left: 1ex;    
+}
+
+/* Buttons */
+
+a.button {
+    display: inline-block;
+    background-color: gray;
+    border-radius: 10px;
+    color: white;
+    font-family: 'Lato', sans-serif;
+    cursor: pointer;
+}
+
+.button.green {
+    background-color: #00B73A;
+    color: white;
+    text-shadow: 0;
+}
+
+.button.blue {
+    background-color: #008BED;
+    color: white;
+    text-shadow: 0;
+}
+
+.nav.links > li > a.button.blue:hover {
+    background-color: #006BCD;
+}
+.nav.links > li > a.button.green:hover {
+    background-color: #00971A;
+}
+
+.nav.links > li > a.button {
+    color: white;
+    text-shadow: 0;
+}
+
+.nav.links > li > a.button:after {
+    content: "\00BB";
 }
 
 /* Icons */
