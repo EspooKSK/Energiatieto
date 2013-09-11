@@ -62,15 +62,20 @@ define([
         onShow: function() {
             // must be before rightpanel is displayed
             // or chart energy sums won't show initially
-            selectedBuildings.fetch();
-            if (_.size(selectedBuildings) > 0) {
-                this.leftpanel.show(this.ChartArea);
-            } else {
-                this.leftpanel.show(this.instructionView);
-            }
-
+            var self = this;
+            selectedBuildings.fetch({
+                success: function () {
+                    if (selectedBuildings.length > 0) {
+                        self.leftpanel.show(self.ChartArea);
+                    } else {
+                        self.leftpanel.show(self.instructionView);
+                    }
+                },
+                error: function() {
+                    self.leftpanel.show(self.instructionView);
+                }
+            });
             this.rightpanel.show(this.rightPanelView);
-            
             this.initClearConfirmationPopover();
         },
         initClearConfirmationPopover: function() {

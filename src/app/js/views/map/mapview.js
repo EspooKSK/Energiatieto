@@ -39,16 +39,21 @@ define([
                 }
             },
             showBuildings: function() {
-                this.clear();
-                this.activate(this.layers.building);
+                var self = this;
+                GoogleMaps.create(function() {
+                    self.clear();
+                    self.activate(self.layers.building);
+                });
             },
             clear: function() {
                 this.controls.close();
+                if (this.map) {
                     this.map.overlayMapTypes.clear();
-                    _.each(_.values(this.layers), function(it) {
-                        if (typeof it.deactivate === "function") {
-                            it.deactivate();
-                        }
+                }
+                _.each(_.values(this.layers), function(it) {
+                    if (typeof it.deactivate === "function") {
+                        it.deactivate();
+                    }
                 });
             },
             showSolarEnergy: function() {
