@@ -8,9 +8,9 @@ define(["underscore"], function(_){
     
     this.getConstants = function(){
       return {
-        nominalInterest: 0.05,
-        inflation: 0.03,
-        energyEscalation: 0.01,
+        nominalInterest: 0.01,
+        inflation: 0.02,
+        energyEscalation: 0.04,
         energyCost: 0,
         solarEnergySquareMeterPrice: 300,
         solarHeatSquareMeterPrice: 500,
