@@ -23,7 +23,7 @@ module.exports = function(grunt) {
         grunt.task.run('shutdown-functional-server');
     });
     grunt.registerTask("shutdown-functional-server", "Shutdown the functional test server.", function(prop) {
-        this.requires('simplemocha');
+        this.requires('simplemocha:functional');
         var dn = this.async();
 
         child.on('exit', function (code, signal) {

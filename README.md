@@ -1,10 +1,26 @@
 Energiatieto
 ============
 
+http://energiatieto.herokuapp.com/
 
-**Running**
+Dependencies
+------------
 
-You need [node.js](http://nodejs.org/) and [npm](https://npmjs.org/) (comes with node). After cloning the repo, install all the dependencies:
+*  [node](http://nodejs.org/) (+npm)
+*  [grunt](http://gruntjs.com/)
+*  [heroku toolbelt](https://toolbelt.heroku.com/)
+
+**Install*
+
+1.  node and npm (eg. with [homebrew](http://brew.sh/))
+2.  grunt cli (_npm install -g grunt-cli_)
+
+Heroku toolbelt is only needed if you need to change deployment parameter etc. Standard deployment is done using a Git push to the heroku Git repository.
+
+Running
+-------
+
+After cloning the repo, install all the dependencies:
 
 ```
 npm install
@@ -32,12 +48,6 @@ App configuration should be placed either in _config.json_, or passed in as envi
 
 **Building & testing**
 
-This project uses [Grunt](http://gruntjs.com/) as the build tool of choice. You can install it with _npm_:
-
-```
-npm install -g grunt-cli
-```
-
 Grunt can run all test suites (node, functional, client) with the following command:
 
 ```
@@ -49,6 +59,10 @@ Functional tests will kick off a node server, and point a PhantomJS instance to 
 **Deployment**
 
 Deployment assumes that a [heroku remote](https://devcenter.heroku.com/articles/git#creating-a-heroku-remote) has been configured for the repository.
+
+```
+git remote add heroku git@heroku.com:energiatieto.git
+```
 
 ```
 grunt deploy

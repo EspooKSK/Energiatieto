@@ -13,16 +13,13 @@ module.exports = function(grunt) {
         '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
         ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
     },
-    qunit: {
-      files: ['test/client/**/*.html']
-    },
     concat: {
       dist: {
         src: ['public/lib/**/*.js', 'public/js/**/*.js'],
         dest: 'dist/<%= pkg.name %>-<%= pkg.version %>.js'
       }
     },
-    min: {
+    uglify: {
       dist: {
         src: ['<config:concat.dist.dest>'],
         dest: 'public/dist/<%= pkg.name %>-<%= pkg.version %>.min.js'
@@ -81,7 +78,6 @@ module.exports = function(grunt) {
     casperjs: {
       files: ['test/functional/**/*.js']
     },
-    uglify: {},
     simplemocha: {
       node: {
         src: 'test/server/**/*.spec.js',
@@ -181,7 +177,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('mocha', 'simplemocha');
 
-  grunt.registerTask('run', ['jshint', 'qunit', 'functional', 'concat', 'min', 'start']);
+  grunt.registerTask('run', ['jshint', 'functional', 'concat', 'uglify', 'start']);
 
   grunt.registerTask('test', ['jshint', 'simplemocha:node', 'functional', 'simplemocha:client']);
 
@@ -192,6 +188,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-requirejs');
 
   grunt.loadNpmTasks('grunt-shell');
+
+  grunt.loadNpmTasks('grunt-contrib-concat');
+
+  grunt.loadNpmTasks('grunt-contrib-uglify');
 
   grunt.loadTasks('tasks');
 
