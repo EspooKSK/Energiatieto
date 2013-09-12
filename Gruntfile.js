@@ -151,7 +151,7 @@ module.exports = function(grunt) {
         stdout: true
       },
       git_add_dist: {
-        command: 'git add public/dist',
+        command: 'git add -f public/dist',
         stdout: true
       },
       git_commit_new_rel: {

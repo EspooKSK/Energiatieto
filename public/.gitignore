@@ -1,9 +1,0 @@
-dist/index.html
-dist/lib/*
-!dist/lib/bootstrap
-!dist/lib/tipsy
-!dist/lib/jqueryui/
-dist/*.js
-dist/*.txt
-!dist/js/main.js
-dist/js/*
